@@ -1,0 +1,32 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "node server with express",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srdn25/fullstack-express-react.git"
+  },
+  "keywords": [
+    "node.js",
+    "express.js",
+    "mysql",
+    "websocket"
+  ],
+  "author": "Denys Sorokin",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/srdn25/fullstack-express-react/issues"
+  },
+  "homepage": "https://github.com/srdn25/fullstack-express-react#readme",
+  "dependencies": {
+    "express": "4.18.2",
+    "mysql2": "3.3.1",
+    "sequelize": "6.31.1",
+    "ws": "8.13.0"
+  }
+}

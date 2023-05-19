@@ -1,0 +1,25 @@
+{
+  "name": "frontend",
+  "version": "0.0.1",
+  "description": "React client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srdn25/fullstack-express-react.git"
+  },
+  "keywords": [
+    "react.js",
+    "javascript",
+    "redux",
+    "websocket"
+  ],
+  "author": "Denis Sorokin",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/srdn25/fullstack-express-react/issues"
+  },
+  "homepage": "https://github.com/srdn25/fullstack-express-react#readme"
+}
