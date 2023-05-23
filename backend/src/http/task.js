@@ -1,6 +1,7 @@
 const GetTaskAction = require('../actions/task/GetTask');
 const CreateTaskAction = require('../actions/task/CreateTask');
 const UpdateTaskAction = require('../actions/task/UpdateTask');
+const DeleteTaskAction = require('../actions/task/DeleteTask');
 
 async function createTask (app, req, res) {
     const data = req.body;
@@ -25,6 +26,7 @@ async function createTask (app, req, res) {
     }
 
     const createTaskAction = new CreateTaskAction({
+        app,
         title: data.title,
         dueDate: data.dueDate,
         description: data.description,
@@ -40,7 +42,7 @@ async function getTask (app, req, res) {
 
     if (!taskId) {
         throw app.TransportError({
-            message: 'Task id in request params is required! It should be number',
+            message: 'Task id in params is required! It should be number',
             status: 400,
         })
     }
@@ -54,24 +56,38 @@ async function getTask (app, req, res) {
 }
 
 async function updateTask (app, req, res) {
+    const { taskId } = req.params;
     const data = req.body;
 
-    if (!data) {
+    if (!data || !taskId) {
         throw new app.TransportError({
             message: 'Nothing for update',
             status: 400
         });
     }
 
-    const updateTaskAction = new UpdateTaskAction(data);
+    const updateTaskAction = new UpdateTaskAction({ app, taskId, ...data });
 
     const task = await updateTaskAction.update();
 
     res.send(task);
 }
 
-function deleteTask (app, req, res) {
+async function deleteTask (app, req, res) {
+    const { taskId } = req.params;
 
+    if (!taskId) {
+        throw new app.TransportError({
+            message: 'You should pass taskId for delete task',
+            status: 400
+        });
+    }
+
+    const deleteTaskAction = new DeleteTaskAction({ app, taskId });
+
+    await deleteTaskAction.delete();
+
+    res.send('deleted');
 }
 
 module.exports = {

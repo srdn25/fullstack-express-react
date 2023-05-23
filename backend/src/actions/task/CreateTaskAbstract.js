@@ -15,7 +15,7 @@ class CreateTaskAbstract extends CreateOrUpdateValidation {
             task = await Task.create({
                 title: this.title,
                 dueDate: this.dueDate,
-                description: this.description,
+                ...this.description ? { description: this.description } : {},
             });
         } catch (error) {
             const message = 'Error on save task to database';

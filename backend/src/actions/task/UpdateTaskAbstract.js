@@ -42,7 +42,7 @@ class UpdateTaskAbstract extends CreateOrUpdateValidation {
 
             return task;
         } catch (error) {
-            transaction.rollback();
+            await transaction.rollback();
 
             const message = 'Error on update task';
             throw new this.app.TransportError({
