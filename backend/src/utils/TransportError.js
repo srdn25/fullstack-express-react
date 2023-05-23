@@ -5,6 +5,14 @@ class TransportError extends Error {
         this.status = status;
         this.error = error;
     }
+
+    serialize() {
+        return {
+            status: this.status,
+            message: this.message,
+            error: this.error?.message,
+        }
+    }
 }
 
 module.exports = TransportError;

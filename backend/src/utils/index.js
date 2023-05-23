@@ -10,6 +10,10 @@ async function checkPromiseResult (promise) {
 }
 
 function convertToString (data) {
+    if (data instanceof TransportError) {
+        return JSON.stringify(data.serialize());
+    }
+
     return typeof data === 'string' ? data : JSON.stringify(data);
 }
 

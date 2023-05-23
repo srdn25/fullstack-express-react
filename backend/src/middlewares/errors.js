@@ -6,9 +6,16 @@ function clientErrorHandler (err, req, res, next) {
     }
 }
 
-function errorHandler (err, req, res) {
+function errorHandler (err, req, res, next) {
     res.status(err.status || 500)
-    res.send(err.message || 'Unknown error')
+    if (err.message) {
+        res.send({
+            message: err.message,
+            error: err?.error?.message,
+        })
+    } else {
+        res.send('Unknown error');
+    }
 }
 
 module.exports = new Set([

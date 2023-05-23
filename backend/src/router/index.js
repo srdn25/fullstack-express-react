@@ -34,7 +34,7 @@ module.exports = {
         endpoints.forEach((endpoint) => {
             app.httpServer[endpoint.method](endpoint.path, async (req, res, next) => {
                 try {
-                    await endpoint.handler(app, req, res)
+                    await endpoint.handler(app, req, res);
                 } catch (error) {
                     app.logger.error(error);
                     next(error);
