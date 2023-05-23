@@ -1,19 +1,20 @@
-class GetTaskAbstract {
-    constructor({ app }) {
-        this.app = app;
+const ActionBase = require('./ActionBase');
+
+class GetTaskAbstract extends ActionBase {
+    constructor(props) {
+        super(props);
+        this.taskId = props.taskId;
     }
 
-    async getTaskById(id) {
-        const task = await this.findTask({ id });
+    async getTaskById() {
+        const task = await this.#findTask({ id: this.taskId });
 
-        this.validate(task);
+        this.#validate(task);
 
         return task.serialize();
     }
 
-    async findTask(where) {}
-
-    validate(task) {}
+    async #findTask(where) {}
 }
 
 module.exports = GetTaskAbstract;

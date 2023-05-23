@@ -1,12 +1,11 @@
 const GetTaskAbstract = require('./GetTaskAbstract');
 
 class GetTask extends GetTaskAbstract {
-    constructor(args) {
-        super(args);
-        this.taskId = args.taskId;
+    constructor(props) {
+        super(props);
     }
 
-    async findTask (where) {
+    async #findTask (where) {
         const { Task } = this.app.db;
         let task;
 
@@ -24,12 +23,12 @@ class GetTask extends GetTaskAbstract {
         return task;
     }
 
-    validate(task) {
+    #validate(task) {
         if (!task) {
-            throw new Error({
+            throw new this.app.TransportError({
                 message: 'Task not found',
                 code: 404,
-            })
+            });
         }
     }
 }

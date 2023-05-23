@@ -1,7 +1,37 @@
 const GetTaskAction = require('../actions/GetTask');
+const CreateTaskAction = require('../actions/CreateTask');
 
-function createTask (app, req, res) {
+async function createTask (app, req, res) {
+    const data = req.body;
 
+    if (!data) {
+        throw new app.TransportError({
+            message: 'Request should contains data for create a task',
+            status: 400
+        });
+    }
+    if (!data.title) {
+        throw new app.TransportError({
+            message: 'Task title is required',
+            status: 400
+        });
+    }
+    if (!data.dueDate) {
+        throw new app.TransportError({
+            message: 'Task due date is required',
+            status: 400
+        });
+    }
+
+    const createTaskAction = new CreateTaskAction({
+        title: data.title,
+        dueDate: data.dueDate,
+        description: data.description,
+    });
+
+    const task = await createTaskAction.create();
+
+    res.send(task);
 }
 
 async function getTask (app, req, res) {
