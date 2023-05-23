@@ -1,6 +1,6 @@
-const GetTaskAction = require('../actions/GetTask');
-const CreateTaskAction = require('../actions/CreateTask');
-const UpdateTaskAction = require('../actions/UpdateTask');
+const GetTaskAction = require('../actions/task/GetTask');
+const CreateTaskAction = require('../actions/task/CreateTask');
+const UpdateTaskAction = require('../actions/task/UpdateTask');
 
 async function createTask (app, req, res) {
     const data = req.body;

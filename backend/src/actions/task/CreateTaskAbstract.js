@@ -31,6 +31,8 @@ class CreateTaskAbstract extends CreateOrUpdateValidation {
 
     // prepare data for response
     #serialize(task) {}
+
+    #validate() {}
 }
 
 module.exports = CreateTaskAbstract;

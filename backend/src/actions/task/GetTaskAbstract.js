@@ -1,4 +1,4 @@
-const ActionBase = require('./ActionBase');
+const ActionBase = require('../ActionBase');
 
 class GetTaskAbstract extends ActionBase {
     constructor(props) {
@@ -15,6 +15,8 @@ class GetTaskAbstract extends ActionBase {
     }
 
     async #findTask(where) {}
+
+    async #validate() {}
 }
 
 module.exports = GetTaskAbstract;

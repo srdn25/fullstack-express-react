@@ -52,6 +52,8 @@ class UpdateTaskAbstract extends CreateOrUpdateValidation {
             });
         }
     }
+
+    #validate() {}
 }
 
 module.exports = UpdateTaskAbstract;

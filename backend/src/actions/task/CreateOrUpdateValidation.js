@@ -1,5 +1,5 @@
-const ActionBase = require('./ActionBase');
-const { fromStringToDate } = require('../utils');
+const ActionBase = require('../ActionBase');
+const { fromStringToDate } = require('../../utils');
 
 class CreateOrUpdateValidation extends ActionBase {
     constructor(props) {
