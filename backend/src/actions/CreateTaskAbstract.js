@@ -1,11 +1,8 @@
-const ActionBase = require('./ActionBase');
+const CreateOrUpdateValidation = require('./CreateOrUpdateValidation');
 
-class CreateTaskAbstract extends ActionBase {
+class CreateTaskAbstract extends CreateOrUpdateValidation {
     constructor(props) {
         super(props);
-        this.dueDate = props.dueDate;
-        this.title = props.title;
-        this.description = props.description;
     }
 
     async create() {

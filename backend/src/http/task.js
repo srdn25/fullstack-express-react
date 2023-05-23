@@ -1,5 +1,6 @@
 const GetTaskAction = require('../actions/GetTask');
 const CreateTaskAction = require('../actions/CreateTask');
+const UpdateTaskAction = require('../actions/UpdateTask');
 
 async function createTask (app, req, res) {
     const data = req.body;
@@ -52,8 +53,21 @@ async function getTask (app, req, res) {
     res.send(task);
 }
 
-function updateTask (app, req, res) {
+async function updateTask (app, req, res) {
+    const data = req.body;
 
+    if (!data) {
+        throw new app.TransportError({
+            message: 'Nothing for update',
+            status: 400
+        });
+    }
+
+    const updateTaskAction = new UpdateTaskAction(data);
+
+    const task = await updateTaskAction.update();
+
+    res.send(task);
 }
 
 function deleteTask (app, req, res) {
