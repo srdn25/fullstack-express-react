@@ -1,11 +1,10 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+const App = require('./src/initializers/App');
 
-app.get('/', (req, res) => {
-    res.send('ok');
-});
+async function start () {
+    const app = new App(process.env);
 
-app.listen(port, () => {
-    console.log(`Application started on ${port} port!`);
-})
+    await app.init();
+
+    app.logger.info('App successfully started');
+}
+start().catch((error) => process.stdout.write(error));

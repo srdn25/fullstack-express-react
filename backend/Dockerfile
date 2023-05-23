@@ -1,0 +1,29 @@
+FROM node:18.14.0-alpine
+WORKDIR /home/app
+
+COPY package.json /home/app/
+COPY package-lock.json /home/app/
+
+RUN npm ci
+
+COPY .. /home/app
+
+ENV PORT=3001
+
+ENV DEV_DB_USERNAME=user123
+ENV DEV_DB_PASSWORD=password123
+ENV DEV_DB_NAME=fake_jira
+ENV DEV_DB_HOSTNAME=0.0.0.0
+
+ENV TEST_DB_USERNAME=testuser123
+ENV TEST_DB_PASSWORD=1356789test
+ENV TEST_DB_NAME=fake_jira_test
+ENV TEST_DB_HOSTNAME=0.0.0.0
+
+ENV PROD_DB_USERNAME=realuser123
+ENV PROD_DB_PASSWORD=3579password
+ENV PROD_DB_NAME=fake_jira_prod
+ENV PROD_DB_HOSTNAME=0.0.0.0
+
+CMD ["npm", "run", "start"]
+EXPOSE 3001
