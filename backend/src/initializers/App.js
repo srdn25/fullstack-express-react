@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../database/models');
 const routes = require('../router');
 const middlewares = require('../middlewares');
+const errorMiddlewares = require('../middlewares/errors');
 const { convertToString, TransportError } = require('../utils');
 
 class App {
@@ -29,6 +30,8 @@ class App {
         middlewares.forEach((mw) => app.httpServer.use(mw));
 
         routes.connect(app);
+
+        errorMiddlewares.forEach((wm) => app.httpServer.use(wm));
     }
 
     startHttpServer (port, server) {
