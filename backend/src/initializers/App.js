@@ -18,6 +18,9 @@ class App {
     async init () {
         this.db = db;
 
+        await this.db.sequelize.sync();
+        await this.db.sequelize.query(`USE ${this.db.config.database}`);
+
         this.httpServer = express();
         this.TransportError = TransportError;
         this.connectRoutesAndMiddlewares(this);

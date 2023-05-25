@@ -34,5 +34,8 @@ without errors.
 ---
 Backend config for IDEA
 
-start: DEV_DB_HOSTNAME=localhost;DEV_DB_NAME=fake_jira;DEV_DB_PASSWORD=password123;DEV_DB_USERNAME=user123;PORT=3001;PROD_DB_HOSTNAME=localhost;PROD_DB_NAME=fake_jira_prod;PROD_DB_PASSWORD=3579password;PROD_DB_USERNAME=realuser123;TEST_DB_HOSTNAME=localhost;TEST_DB_NAME=fake_jira_test;TEST_DB_PASSWORD=1356789test;TEST_DB_USERNAME=testuser123;NODE_ENV=development
-test: DEV_DB_HOSTNAME=localhost;DEV_DB_NAME=fake_jira;DEV_DB_PASSWORD=password123;DEV_DB_USERNAME=user123;PORT=3001;PROD_DB_HOSTNAME=localhost;PROD_DB_NAME=fake_jira_prod;PROD_DB_PASSWORD=3579password;PROD_DB_USERNAME=realuser123;TEST_DB_HOSTNAME=localhost;TEST_DB_NAME=fake_jira_test;TEST_DB_PASSWORD=1356789test;TEST_DB_USERNAME=testuser123;NODE_ENV=test
+```DEV_DB_HOSTNAME=localhost;DEV_DB_NAME=fake_jira;DEV_DB_PASSWORD=password123;DEV_DB_USERNAME=user123;PORT=3001;PROD_DB_HOSTNAME=localhost;PROD_DB_NAME=fake_jira_prod;PROD_DB_PASSWORD=3579password;PROD_DB_USERNAME=realuser123;TEST_DB_HOSTNAME=localhost;TEST_DB_NAME=fake_jira_test;TEST_DB_PASSWORD=1356789test;TEST_DB_USERNAME=testuser123;```
+
+---
+## Notes
+- Added umzug script for clear database on tests before run tests. Then execute migrations

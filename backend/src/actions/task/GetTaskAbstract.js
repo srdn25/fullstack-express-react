@@ -6,14 +6,6 @@ class GetTaskAbstract extends ActionBase {
         this.taskId = props.taskId;
     }
 
-    async getTaskById() {
-        const task = await this.#findTask({ id: this.taskId });
-
-        this.#validate(task);
-
-        return task.serialize();
-    }
-
     async #findTask(where) {}
 
     async #validate() {}

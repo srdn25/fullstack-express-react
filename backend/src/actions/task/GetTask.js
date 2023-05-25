@@ -5,6 +5,14 @@ class GetTask extends GetTaskAbstract {
         super(props);
     }
 
+    async getTaskById() {
+        const task = await this.#findTask({ id: this.taskId });
+
+        this.#validate(task);
+
+        return task.serialize();
+    }
+
     async #findTask (where) {
         const { Task } = this.app.db;
         let task;
@@ -27,7 +35,7 @@ class GetTask extends GetTaskAbstract {
         if (!task) {
             throw new this.app.TransportError({
                 message: 'Task not found',
-                code: 404,
+                status: 404,
             });
         }
     }

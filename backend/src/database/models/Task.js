@@ -47,5 +47,30 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Task',
     tableName: 'tbl_task',
   });
+
+  Task.prototype.serialize = function serialize() {
+    const {
+      id,
+      title,
+      description,
+      status,
+      author,
+      dueDate,
+      createdAt,
+      updatedAt,
+    } = this;
+
+    return {
+      id,
+      title,
+      description,
+      status,
+      author,
+      dueDate,
+      createdAt,
+      updatedAt,
+    };
+  };
+
   return Task;
 };
