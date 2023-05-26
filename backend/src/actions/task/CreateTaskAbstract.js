@@ -1,15 +1,20 @@
-const CreateOrUpdateValidation = require('./CreateOrUpdateValidation');
+const ActionBase = require('../ActionBase');
+const moment = require('moment/moment');
 
-class CreateTaskAbstract extends CreateOrUpdateValidation {
+class CreateTaskAbstract extends ActionBase {
     constructor(props) {
         super(props);
+        this.dueDate = props.dueDate;
+        this.title = props.title;
+        this.description = props.description;
+        this.author = props.author;
     }
 
     async create() {
         const { Task } = this.app.db;
         let task;
 
-        this.validate();
+        this.#validate();
 
         try {
             task = await Task.create({
@@ -28,6 +33,43 @@ class CreateTaskAbstract extends CreateOrUpdateValidation {
         }
 
         return this.#serialize(task);
+    }
+
+    #validate() {
+        if (!this.dueDate) {
+            throw new this.app.TransportError({
+                status: 400,
+                message: 'For create task dueDate is required',
+            })
+        }
+
+        if (!this.author || typeof this.author !== 'string' || this.author.match(/^(\w|\s){2,15}$/) === null) {
+            throw new this.app.TransportError({
+                status: 400,
+                message: 'Author is required. And this should contains only letter, digit',
+            })
+        }
+
+        if (!moment(this.dueDate).isValid()) {
+            throw new this.app.TransportError({
+                status: 400,
+                message: 'Date should be in next format YYYY-MM-DD HH:MM',
+            })
+        }
+
+        if (!this.title || typeof this.title !== 'string' || this.title.match(/^(\w|\s){3,150}$/) === null) {
+            throw new this.app.TransportError({
+                status: 400,
+                message: 'For create task title is required',
+            })
+        }
+
+        if (this.description && (typeof this.description !== 'string' || this.description.match(/^(\w|\s|\.|\,){3,1000}$/) === null)) {
+            throw new this.app.TransportError({
+                status: 400,
+                message: 'Task description should be string contains only letter, digit or underscore',
+            })
+        }
     }
 
     // prepare data for response

@@ -1,5 +1,6 @@
 const helper = require('../../helper');
 const { prepareDate } = require('../../../../src/utils');
+const { consts: { TASK_STATUS } } = require('../../../../src/utils');
 
 const { expect } = helper;
 
@@ -24,6 +25,34 @@ describe('[POST] /task', () => {
             dueDate: payload.dueDate,
             author: payload.author,
             status: 'todo',
+            createdAt: body.createdAt,
+            updatedAt: body.updatedAt,
+        });
+        expect(typeof body.id === 'number').to.be.true;
+    });
+
+    it('Should able to create task with description', async () => {
+        const payload = {
+            title: helper.generateText(),
+            dueDate: prepareDate(helper.generateFutureDate(3)),
+            author: 'Patric',
+            description: helper.generateText(false),
+        };
+
+        const { body } = await helper.request
+            .post('/task')
+            .send(payload)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', 'application/json; charset=utf-8')
+            .expect(201);
+
+        expect(body).to.deep.eql({
+            id: body.id,
+            title: payload.title,
+            dueDate: payload.dueDate,
+            author: payload.author,
+            status: TASK_STATUS.todo,
+            description: payload.description,
             createdAt: body.createdAt,
             updatedAt: body.updatedAt,
         });
