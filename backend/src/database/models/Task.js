@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { consts: { TASK_STATUS } } = require('../../utils');
 
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
@@ -34,9 +35,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('todo', 'in_progress', 'done'),
+      type: DataTypes.ENUM(...Object.values(TASK_STATUS)),
       allowNull: false,
-      defaultValue: 'todo',
+      defaultValue: TASK_STATUS.todo,
     },
     author: {
       type: DataTypes.STRING,

@@ -1,5 +1,6 @@
 'use strict';
 const { Sequelize } = require('sequelize');
+const { consts: { TASK_STATUS } } = require('../../utils');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -16,9 +17,9 @@ module.exports = {
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM('todo', 'in_progress', 'done'),
+        type: Sequelize.ENUM(Object.values(TASK_STATUS)),
         allowNull: false,
-        defaultValue: 'todo',
+        defaultValue: TASK_STATUS.todo,
       },
       author: {
         type: Sequelize.STRING,
