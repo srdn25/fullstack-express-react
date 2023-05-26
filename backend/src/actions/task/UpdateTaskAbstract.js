@@ -31,7 +31,7 @@ class UpdateTaskAbstract extends ActionBase {
             if (!task) {
                 throw new this.app.TransportError({
                     message: 'Not found task for update',
-                    status: 400,
+                    status: 404,
                 });
             }
 

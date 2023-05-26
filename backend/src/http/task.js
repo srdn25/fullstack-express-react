@@ -86,9 +86,9 @@ async function deleteTask (app, req, res) {
 
     const deleteTaskAction = new DeleteTaskAction({ app, taskId });
 
-    await deleteTaskAction.delete();
+    const result = await deleteTaskAction.delete();
 
-    res.send('deleted');
+    res.send(result);
 }
 
 module.exports = {

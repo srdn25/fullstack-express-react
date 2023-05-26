@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "node server with express",
   "main": "index.js",
   "scripts": {
@@ -41,6 +41,7 @@
     "faker": "5.5.3",
     "mocha": "^10.2.0",
     "sequelize-cli": "^6.6.0",
+    "sinon": "^15.1.0",
     "supertest": "^6.3.3"
   }
 }

@@ -4,7 +4,7 @@ class ActionBase {
     }
 
     // should validate data before save to database or send as response
-    #validate() {}
+    validate() {}
 }
 
 module.exports = ActionBase;

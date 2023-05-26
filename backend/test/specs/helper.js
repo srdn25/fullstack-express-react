@@ -5,6 +5,7 @@ const faker = require('faker');
 const App = require('../../src/initializers/App');
 const { fromDateToString } = require('../../src/utils');
 const migrations = require('../../scripts/migration');
+const sinon = require('sinon');
 
 const createdIds = new Set();
 
@@ -67,5 +68,9 @@ const helper = {
     },
     chai,
     expect: chai.expect,
+    spy: sinon.spy,
+    stub: sinon.stub,
+    mock: sinon.mock,
+    assert: sinon.assert,
 }
 module.exports = helper;

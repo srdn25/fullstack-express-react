@@ -72,7 +72,7 @@ describe('[PUT] /task/:taskId', () => {
             .send(payload)
             .set('Accept', 'application/json')
             .expect('Content-Type', 'application/json; charset=utf-8')
-            .expect(400);
+            .expect(404);
 
         expect(body).to.be.an('object');
         expect(body).to.have.property('message');
