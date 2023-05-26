@@ -49,7 +49,7 @@ const helper = {
             return faker.lorem.words(3);
         }
 
-        return faker.lorem.sentences();
+        return faker.lorem.sentences(1);
     },
     generateFutureDate (days = 0) {
         const today = new Date();

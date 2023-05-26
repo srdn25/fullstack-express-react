@@ -1,5 +1,6 @@
 const helper = require('../../helper');
 const { prepareDate } = require('../../../../src/utils');
+const { consts: { TASK_STATUS } } = require('../../../../src/utils');
 
 const { expect } = helper;
 
@@ -49,7 +50,7 @@ describe('[GET] /task', () => {
             id: taskId,
             title: taskTitle,
             description: taskDescription,
-            status: 'todo',
+            status: TASK_STATUS.todo,
             author: taskAuthor,
             dueDate: taskDueDate,
             createdAt: body.createdAt,

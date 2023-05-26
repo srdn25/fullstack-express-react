@@ -1,5 +1,6 @@
 const moment = require('moment/moment');
 const TransportError = require('./TransportError');
+const consts = require('./consts');
 
 async function checkPromiseResult (promise) {
     try {
@@ -24,6 +25,7 @@ function prepareDate (date) {
 }
 
 module.exports = {
+    consts,
     TransportError,
     checkPromiseResult,
     convertToString,
