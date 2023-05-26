@@ -10,7 +10,7 @@ class UpdateTaskAbstract extends CreateOrUpdateValidation {
         const { Task, sequelize } = this.app.db;
         let task;
 
-        this.#validate();
+        this.validate();
 
         const transaction = sequelize.transaction({ autocommit: false });
 
@@ -52,8 +52,6 @@ class UpdateTaskAbstract extends CreateOrUpdateValidation {
             });
         }
     }
-
-    #validate() {}
 }
 
 module.exports = UpdateTaskAbstract;

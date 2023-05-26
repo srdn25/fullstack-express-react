@@ -29,7 +29,11 @@ describe('[GET] /task', () => {
     });
 
     it('Should return 404 status and message if task not found', async () => {
-        const { body } = await helper.request.get(`/task/${notExistingTaskId}`).expect(404);
+        const { body } = await helper.request
+            .get(`/task/${notExistingTaskId}`)
+            .expect('Content-Type', 'application/json; charset=utf-8')
+            .expect(404);
+
         expect(body).to.deep.eql({
             message: 'Task not found',
         });
@@ -38,6 +42,7 @@ describe('[GET] /task', () => {
     it('Should return task if found', async () => {
         const { body } = await helper.request
             .get(`/task/${taskId}`)
+            .expect('Content-Type', 'application/json; charset=utf-8')
             .expect(200);
 
         expect(body).to.deep.eql({

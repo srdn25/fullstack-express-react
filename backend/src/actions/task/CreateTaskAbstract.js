@@ -9,12 +9,13 @@ class CreateTaskAbstract extends CreateOrUpdateValidation {
         const { Task } = this.app.db;
         let task;
 
-        this.#validate();
+        this.validate();
 
         try {
             task = await Task.create({
                 title: this.title,
                 dueDate: this.dueDate,
+                author: this.author,
                 ...this.description ? { description: this.description } : {},
             });
         } catch (error) {
@@ -30,9 +31,17 @@ class CreateTaskAbstract extends CreateOrUpdateValidation {
     }
 
     // prepare data for response
-    #serialize(task) {}
+    #serialize(task) {
+        if (!task) {
+            throw new this.app.TransportError({
+                status: 500,
+                message: 'Has not task for serialize after create',
+            });
+        }
 
-    #validate() {}
+        // here can add other data for response
+        return task.serialize();
+    }
 }
 
 module.exports = CreateTaskAbstract;

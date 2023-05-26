@@ -30,18 +30,19 @@ async function createTask (app, req, res) {
         title: data.title,
         dueDate: data.dueDate,
         description: data.description,
+        author: data.author,
     });
 
     const task = await createTaskAction.create();
 
-    res.send(task);
+    res.status(201).send(task);
 }
 
 async function getTask (app, req, res) {
     const { taskId } = req.params;
 
     if (!taskId) {
-        throw app.TransportError({
+        throw new app.TransportError({
             message: 'Task id in params is required! It should be number',
             status: 400,
         })

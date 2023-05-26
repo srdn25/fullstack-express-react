@@ -8,7 +8,8 @@ module.exports = {
     dialect: 'mysql',
     dialectOptions: {
       bigNumberStrings: true
-    }
+    },
+    logging: false,
   },
   test: {
     username: process.env.TEST_DB_USERNAME,
@@ -19,7 +20,8 @@ module.exports = {
     dialect: 'mysql',
     dialectOptions: {
       bigNumberStrings: true
-    }
+    },
+    logging: false,
   },
   production: {
     username: process.env.PROD_DB_USERNAME,
@@ -30,6 +32,7 @@ module.exports = {
     dialect: 'mysql',
     dialectOptions: {
       bigNumberStrings: true
-    }
+    },
+    logging: false,
   }
 }
