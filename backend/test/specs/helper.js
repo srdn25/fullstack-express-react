@@ -68,9 +68,19 @@ const helper = {
     },
     chai,
     expect: chai.expect,
-    spy: sinon.spy,
-    stub: sinon.stub,
-    mock: sinon.mock,
+    sandbox: sinon.createSandbox(),
     assert: sinon.assert,
-}
+    waitForSocketState (socket, state) {
+        return new Promise((resolve) => {
+            setTimeout( () => {
+                if (socket.readyState === state) {
+                    resolve();
+                } else {
+                    this.waitForSocketState(socket, state).then(resolve);
+                }
+            }, 5);
+        });
+    },
+};
+
 module.exports = helper;

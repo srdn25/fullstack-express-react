@@ -3,7 +3,7 @@ const db = require('../database/models');
 const routes = require('../router');
 const middlewares = require('../middlewares');
 const errorMiddlewares = require('../middlewares/errors');
-const webhookServer = require('../services/websocketServer');
+const websocketServer = require('../services/websocketServer');
 const PubSub = require('../services/pubSub');
 
 const { convertToString, TransportError } = require('../utils');
@@ -11,15 +11,32 @@ const { convertToString, TransportError } = require('../utils');
 class App {
     constructor(config) {
         this.config = config;
-        this.logger = ['info', 'error', 'log', 'debug']
-            .reduce((logger, type) => {
-                logger[type] = (msg) => console.log(convertToString(msg));
-                return logger;
-            }, {});
+        // this.logger = ['info', 'error', 'log', 'debug']
+        //     .reduce((logger, type) => {
+        //         logger[type] = (msg) => console.log(convertToString(msg));
+        //         return logger;
+        //     }, {});
+
+        this.logger = {
+            info: (msg) => console.log(convertToString(msg)),
+            error: (msg) => console.log(convertToString(msg)),
+            log: (msg) => console.log(convertToString(msg)),
+            debug: (msg) => console.log(convertToString(msg)),
+        }
     }
 
     async init () {
-        this.db = db;
+        /**
+         * userId
+         *      {
+         *          create: callbackFunction,
+         *          update: callbackFunction,
+         *          delete: callbackFunction,
+         *      }
+         */
+        this.callbackList = new Map();
+
+        this.db = db(this);
 
         await this.db.sequelize.sync();
         await this.db.sequelize.query(`USE ${this.db.config.database}`);
@@ -29,7 +46,7 @@ class App {
         this.connectRoutesAndMiddlewares(this);
 
         this.pubsub = new PubSub({ logger: this.logger });
-        this.webhooks = webhookServer(this.httpServer, this.logger);
+        this.websocket = websocketServer(this);
 
         const startServerResult = await this.startHttpServer(this.config.PORT, this.httpServer);
         this.logger.info(startServerResult);

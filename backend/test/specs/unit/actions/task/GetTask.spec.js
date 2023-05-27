@@ -6,12 +6,12 @@ const { assert } = helper;
 describe('[UNIT] GetTask action', async () => {
     it('On getTaskById should call Task model findOne once', async () => {
         const taskId = helper.generateId();
-        const serializeSpy = helper.spy();
+        const serializeSpy = helper.sandbox.spy();
 
         const fakeApp = {
             db: {
                 Task: {
-                    findOne: helper.stub().returns({ title: 'some string', serialize: serializeSpy }),
+                    findOne: helper.sandbox.stub().returns({ title: 'some string', serialize: serializeSpy }),
                 }
             }
         };
@@ -22,5 +22,6 @@ describe('[UNIT] GetTask action', async () => {
 
         assert.calledOnce(fakeApp.db.Task.findOne);
         assert.calledWith(fakeApp.db.Task.findOne, { where: { id: taskId } });
+        assert.calledOnce(serializeSpy);
     });
 });

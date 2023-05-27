@@ -4,7 +4,7 @@ const {
 } = require('sequelize');
 const { consts: { TASK_STATUS } } = require('../../utils');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes, app) => {
   class Task extends Model {
     /**
      * Helper method for defining associations.
@@ -47,6 +47,18 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Task',
     tableName: 'tbl_task',
+    hooks: {
+      afterCreate(instance, options) {
+        // send data to all subscribers
+        app.callbackList.forEach((el) => el.create(instance.serialize()));
+      },
+      afterDestroy(instance, options) {
+        app.callbackList.forEach((el) => el.delete(instance.serialize()));
+      },
+      afterUpdate(instance, options) {
+        app.callbackList.forEach((el) => el.update(instance.serialize()));
+      },
+    }
   });
 
   Task.prototype.serialize = function serialize() {

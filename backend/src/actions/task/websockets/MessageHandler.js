@@ -1,5 +1,5 @@
 const MessageHandlerAbstract = require('./MessageHandlerAbstract');
-const { WEBHOOK_MESSAGE_TYPES, WEBHOOK_MESSAGE_METHODS } = require('../../../utils/consts');
+const { WEBSOCKET_MESSAGE_TYPES, WEBSOCKET_MESSAGE_METHODS } = require('../../../utils/consts');
 
 const TaskActionStrategy = require('../strategies/TaskActionStrategy');
 
@@ -7,7 +7,6 @@ const CreateStrategy = require('../strategies/Create');
 const ReadStrategy = require('../strategies/Read');
 const UpdateStrategy = require('../strategies/Update');
 const DeleteStrategy = require('../strategies/Delete');
-const { c } = require('sinon/lib/sinon/spy-formatters');
 
 const STRATEGIES = {
     create: CreateStrategy,
@@ -27,18 +26,7 @@ class MessageHandler extends MessageHandlerAbstract {
         // instead of real auth. Allow only uniq user string
         this.users = new Set();
 
-        /**
-         * userId
-         *      {
-         *          create: callbackFunction,
-         *          read: callbackFunction,
-         *          update: callbackFunction,
-         *          delete: callbackFunction,
-         *      }
-         */
-        this.callbackList = new Map();
-
-        this.webhookSend = props.send;
+        this.websocketSend = props.send;
     }
 
     /**
@@ -67,17 +55,24 @@ class MessageHandler extends MessageHandlerAbstract {
             })
         }
 
-        if (!data.type || !Object.values(WEBHOOK_MESSAGE_TYPES).includes(data.type)) {
+        if (!data.type || !Object.values(WEBSOCKET_MESSAGE_TYPES).includes(data.type)) {
             throw new this.app.TransportError({
                 status: 400,
                 message: `Undefined or not allowed message type - ${data.type}`,
             })
         }
 
-        if (!data.method || !Object.values(WEBHOOK_MESSAGE_METHODS).includes(data.method)) {
+        if (!data.method || !Object.values(WEBSOCKET_MESSAGE_METHODS).includes(data.method)) {
             return {
                 status: 400,
                 message: `Undefined or not allowed message method - ${data.method}`,
+            }
+        }
+
+        if (data.type === WEBSOCKET_MESSAGE_TYPES.subscribe && data.method === WEBSOCKET_MESSAGE_METHODS.read) {
+            return {
+                status: 400,
+                message: `No make sense subscribe to this method - ${data.method}`,
             }
         }
 
@@ -87,7 +82,7 @@ class MessageHandler extends MessageHandlerAbstract {
     }
 
     handle (payload) {
-        if (this.type === WEBHOOK_MESSAGE_TYPES.send) {
+        if (this.type === WEBSOCKET_MESSAGE_TYPES.send) {
             const Strategy = STRATEGIES[this.method];
 
             const taskActionStrategy = new TaskActionStrategy(this.app);
@@ -97,35 +92,36 @@ class MessageHandler extends MessageHandlerAbstract {
             return taskActionStrategy.executeStrategy(payload);
         }
 
-        if (this.type === WEBHOOK_MESSAGE_TYPES.subscribe) {
+        // move subscribe to other place
+        if (this.type === WEBSOCKET_MESSAGE_TYPES.subscribe) {
             function callback (data) {
-                this.webhookSend(JSON.stringify(data));
+                this.websocketSend(JSON.stringify(data));
             }
 
             // set unique callback name - uniq username (we allow only one connection for user)
             // for many connections need to combine userId with uuid
             Object.defineProperty(callback, 'name', { value: this.user });
 
-            const userCallbacks = this.callbackList.get(this.user);
+            const userCallbacks = this.app.callbackList.get(this.user);
 
             // user already has subscribes to events
-            if (userCallbacks[this.method]) {
+            if (userCallbacks && userCallbacks[this.method]) {
                 this.app.logger.debug({
                     message: `User: ${this.user} try to subscribe more than 1 time to the same method (${this.method})`,
                 });
             } else {
                 // this is first user subscribe
-                this.callbackList.set(this.user, {
+                this.app.callbackList.set(this.user, {
                     ...userCallbacks && userCallbacks,
                     [this.method]: callback,
                 })
             }
 
-            this.app.pubsub.subscribe(this.method, callback);
+            return this.app.pubsub.subscribe(this.method, callback);
         }
 
         this.app.logger.error({
-            message: 'On some reason webhook message type not subscribe or send. Need investigate it!',
+            message: 'On some reason, websocket message type - is not "subscribe" or "send". Need investigate it!',
         })
     }
 
@@ -149,7 +145,7 @@ class MessageHandler extends MessageHandlerAbstract {
 
     disconnect () {
         // remove all user callbacks
-        const userCallbacks = this.callbackList.get(this.user);
+        const userCallbacks = this.app.callbackList.get(this.user);
 
         // remove callback from pubsub
         if (userCallbacks) {
@@ -158,7 +154,7 @@ class MessageHandler extends MessageHandlerAbstract {
             }
 
             // delete callback from this list
-            this.callbackList.delete(this.user);
+            this.app.callbackList.delete(this.user);
         }
 
         // remove user from pubsub

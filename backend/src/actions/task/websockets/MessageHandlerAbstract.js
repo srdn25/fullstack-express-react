@@ -1,4 +1,4 @@
-class WebhookMessageHandler {
+class WebsocketMessageHandler {
     constructor(props) {
         this.app = props.app;
     }
@@ -18,3 +18,5 @@ class WebhookMessageHandler {
      */
     handle () {}
 }
+
+module.exports = WebsocketMessageHandler;
