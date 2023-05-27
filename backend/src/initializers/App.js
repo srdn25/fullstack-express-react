@@ -3,6 +3,7 @@ const db = require('../database/models');
 const routes = require('../router');
 const middlewares = require('../middlewares');
 const errorMiddlewares = require('../middlewares/errors');
+const webhookServer = require('../services/websocketServer');
 const { convertToString, TransportError } = require('../utils');
 
 class App {
@@ -24,6 +25,8 @@ class App {
         this.httpServer = express();
         this.TransportError = TransportError;
         this.connectRoutesAndMiddlewares(this);
+
+        this.webhooks = webhookServer(this.httpServer, this.logger);
 
         const startServerResult = await this.startHttpServer(this.config.PORT, this.httpServer);
         this.logger.info(startServerResult);
