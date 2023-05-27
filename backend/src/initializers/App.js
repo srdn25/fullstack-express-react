@@ -4,6 +4,8 @@ const routes = require('../router');
 const middlewares = require('../middlewares');
 const errorMiddlewares = require('../middlewares/errors');
 const webhookServer = require('../services/websocketServer');
+const PubSub = require('../services/pubSub');
+
 const { convertToString, TransportError } = require('../utils');
 
 class App {
@@ -26,6 +28,7 @@ class App {
         this.TransportError = TransportError;
         this.connectRoutesAndMiddlewares(this);
 
+        this.pubsub = new PubSub({ logger: this.logger });
         this.webhooks = webhookServer(this.httpServer, this.logger);
 
         const startServerResult = await this.startHttpServer(this.config.PORT, this.httpServer);
