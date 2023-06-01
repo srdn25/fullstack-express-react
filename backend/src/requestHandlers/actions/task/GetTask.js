@@ -5,8 +5,8 @@ class GetTask extends GetTaskAbstract {
         super(props);
     }
 
-    async getTaskById() {
-        const task = await this.findTask({ id: this.taskId });
+    async getTaskById(id) {
+        const task = await this.findTask({ id });
 
         this.validate(task);
 

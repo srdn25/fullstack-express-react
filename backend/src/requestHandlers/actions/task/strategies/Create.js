@@ -1,10 +1,13 @@
 const CreateTask = require('../CreateTask');
 
 class CreateTaskStrategy {
-    handleTaskChange (data) {
-        const createTask = new CreateTask(data)
+    constructor(app) {
+        this.app = app;
+        this.createTask = new CreateTask({ app })
+    }
 
-        return createTask.create();
+    handleTaskChange (data) {
+        return this.createTask.create(data);
     }
 }
 

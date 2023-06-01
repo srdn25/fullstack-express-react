@@ -16,9 +16,9 @@ describe('[UNIT] GetTask action', async () => {
             }
         };
 
-        const getTaskAction = new GetTaskAction({ app: fakeApp, taskId });
+        const getTaskAction = new GetTaskAction({ app: fakeApp });
 
-        await getTaskAction.getTaskById();
+        await getTaskAction.getTaskById(taskId);
 
         assert.calledOnce(fakeApp.db.Task.findOne);
         assert.calledWith(fakeApp.db.Task.findOne, { where: { id: taskId } });

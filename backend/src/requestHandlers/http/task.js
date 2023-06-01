@@ -25,15 +25,14 @@ async function createTask (app, req, res) {
         });
     }
 
-    const createTaskAction = new CreateTaskAction({
-        app,
+    const createTaskAction = new CreateTaskAction({ app });
+
+    const task = await createTaskAction.create({
         title: data.title,
         dueDate: data.dueDate,
         description: data.description,
         author: data.author,
     });
-
-    const task = await createTaskAction.create();
 
     res.status(201).send(task);
 }
@@ -49,9 +48,9 @@ async function getTask (app, req, res) {
     }
 
     // use actions for separate handlers and business logic
-    const getTaskAction = new GetTaskAction({ app, taskId });
+    const getTaskAction = new GetTaskAction({ app });
 
-    const task = await getTaskAction.getTaskById();
+    const task = await getTaskAction.getTaskById(taskId);
 
     res.send(task);
 }
@@ -63,13 +62,13 @@ async function updateTask (app, req, res) {
     if (!data || !taskId) {
         throw new app.TransportError({
             message: 'Nothing for update',
-            status: 400
+            status: 400,
         });
     }
 
-    const updateTaskAction = new UpdateTaskAction({ app, taskId, ...data });
+    const updateTaskAction = new UpdateTaskAction({ app });
 
-    const task = await updateTaskAction.update();
+    const task = await updateTaskAction.update({ ...data, taskId });
 
     res.send(task);
 }
@@ -84,9 +83,9 @@ async function deleteTask (app, req, res) {
         });
     }
 
-    const deleteTaskAction = new DeleteTaskAction({ app, taskId });
+    const deleteTaskAction = new DeleteTaskAction({ app });
 
-    const result = await deleteTaskAction.delete();
+    const result = await deleteTaskAction.delete(taskId);
 
     res.send(result);
 }

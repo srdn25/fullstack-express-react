@@ -1,10 +1,13 @@
 const DeleteTask = require('../DeleteTask');
 
 class DeleteTaskStrategy {
-    handleTaskChange (data) {
-        const deleteTask = new DeleteTask(data)
+    constructor(app) {
+        this.app = app;
+        this.deleteTask = new DeleteTask({ app })
+    }
 
-        return deleteTask.delete();
+    handleTaskChange (data) {
+        return this.deleteTask.delete(data.id);
     }
 }
 

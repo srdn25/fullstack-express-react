@@ -3,10 +3,9 @@ const ActionBase = require('../ActionBase');
 class DeleteTaskAbstract extends ActionBase {
     constructor(props) {
         super(props);
-        this.taskId = props.taskId;
     }
 
-    async delete () {
+    async delete (id) {
         const { Task, sequelize } = this.app.db;
 
         this.validate();
@@ -14,7 +13,7 @@ class DeleteTaskAbstract extends ActionBase {
         const transaction = await sequelize.transaction({ autocommit: false });
 
         try {
-            const task = await Task.findOne({ where: { id: this.taskId } })
+            const task = await Task.findOne({ where: { id } })
 
             if (!task) {
                 throw new this.app.TransportError({
@@ -24,7 +23,7 @@ class DeleteTaskAbstract extends ActionBase {
             }
 
             await Task.destroy({
-                where: { id: this.taskId },
+                where: { id },
                 transaction,
             })
 

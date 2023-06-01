@@ -5,7 +5,7 @@ const { consts: { TASK_STATUS } } = require('../../../../src/utils');
 const { expect } = helper;
 
 describe('[POST] /task', () => {
-    it('Should able to create task if all required fields in request', async () => {
+    it('Should able to create task if request contains all required fields', async () => {
         const payload = {
             title: helper.generateText(),
             dueDate: prepareDate(helper.generateFutureDate(3)),

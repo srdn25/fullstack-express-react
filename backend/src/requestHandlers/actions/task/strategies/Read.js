@@ -1,10 +1,13 @@
 const GetTask = require('../GetTask');
 
 class GetTaskStrategy {
-    handleTaskChange (data) {
-        const getTask = new GetTask(data)
+    constructor(app) {
+        this.app = app;
+        this.getTask = new GetTask({ app })
+    }
 
-        return getTask.getTaskById();
+    handleTaskChange (data) {
+        return this.getTask.getTaskById(data);
     }
 }
 

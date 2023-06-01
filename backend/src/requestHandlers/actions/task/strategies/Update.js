@@ -1,10 +1,13 @@
 const UpdateTask = require('../UpdateTask');
 
 class UpdateTaskStrategy {
-    handleTaskChange (data) {
-        const updateTask = new UpdateTask(data)
+    constructor(app) {
+        this.app = app;
+        this.updateTask = new UpdateTask({ app })
+    }
 
-        return updateTask.update();
+    handleTaskChange (data) {
+        return this.updateTask.update(data);
     }
 }
 

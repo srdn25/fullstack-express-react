@@ -5,25 +5,19 @@ const { prepareDate } = require('../../../utils');
 class UpdateTaskAbstract extends ActionBase {
     constructor(props) {
         super(props);
-        this.taskId = props.taskId;
-        this.dueDate = props.dueDate;
-        this.title = props.title;
-        this.description = props.description;
-        this.author = props.author;
-        this.status = props.status;
     }
 
-    async update () {
+    async update (data) {
         const { Task, sequelize } = this.app.db;
         let task;
 
-        this.validate();
+        this.validate(data);
 
         const transaction = await sequelize.transaction({ autocommit: false });
 
         try {
             task = await Task.findOne({
-                where: { id: this.taskId },
+                where: { id: data.taskId },
                 lock: true,
                 transaction,
             });
@@ -35,20 +29,20 @@ class UpdateTaskAbstract extends ActionBase {
                 });
             }
 
-            if (this.title) {
-                task.title = this.title;
+            if (data.title) {
+                task.title = data.title;
             }
-            if (this.dueDate) {
-                task.dueDate = prepareDate(this.dueDate);
+            if (data.dueDate) {
+                task.dueDate = prepareDate(data.dueDate);
             }
-            if (this.description) {
-                task.description = this.description;
+            if (data.description) {
+                task.description = data.description;
             }
-            if (this.author) {
-                task.author = this.author;
+            if (data.author) {
+                task.author = data.author;
             }
-            if (this.status) {
-                task.status = this.status;
+            if (data.status) {
+                task.status = data.status;
             }
 
             await task.save({ transaction });
@@ -67,29 +61,36 @@ class UpdateTaskAbstract extends ActionBase {
         }
     }
 
-    validate () {
-        if (this.author && (typeof this.author !== 'string' || this.author.match(/^(\w|\s){2,15}$/) === null)) {
+    validate (data) {
+        if (data.taskId && (typeof data.taskId !== 'string' || data.taskId.match(/^[0-9]+$/) === null)) {
+            throw new this.app.TransportError({
+                status: 400,
+                message: 'TaskId is required. And this should contains digit',
+            })
+        }
+
+        if (data.author && (typeof data.author !== 'string' || data.author.match(/^(\w|\s){2,15}$/) === null)) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'Author is required. And this should contains only letter, digit',
             })
         }
 
-        if (this.dueDate && !moment(this.dueDate).isValid()) {
+        if (data.dueDate && !moment(data.dueDate).isValid()) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'Date should be in next format YYYY-MM-DD HH:MM',
             })
         }
 
-        if (this.title && (typeof this.title !== 'string' || this.title.match(/^(\w|\s){3,150}$/) === null)) {
+        if (data.title && (typeof data.title !== 'string' || data.title.match(/^(\w|\s){3,150}$/) === null)) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'For create task title is required',
             })
         }
 
-        if (this.description && (typeof this.description !== 'string' || this.description.match(/^(\w|\s|\.|\,){3,1000}$/) === null)) {
+        if (data.description && (typeof data.description !== 'string' || data.description.match(/^(\w|\s|\.|\,){3,1000}$/) === null)) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'Task description should be string contains only letter, digit or underscore',

@@ -4,25 +4,21 @@ const moment = require('moment/moment');
 class CreateTaskAbstract extends ActionBase {
     constructor(props) {
         super(props);
-        this.dueDate = props.dueDate;
-        this.title = props.title;
-        this.description = props.description;
-        this.author = props.author;
     }
 
     // this method will in abstract class because create class should be able to create task
-    async create() {
+    async create(data) {
         const { Task } = this.app.db;
         let task;
 
-        this.validate();
+        this.validate(data);
 
         try {
             task = await Task.create({
-                title: this.title,
-                dueDate: this.dueDate,
-                author: this.author,
-                ...this.description ? { description: this.description } : {},
+                title: data.title,
+                dueDate: data.dueDate,
+                author: data.author,
+                ...data.description ? { description: data.description } : {},
             });
         } catch (error) {
             const message = 'Error on save task to database';
@@ -36,36 +32,43 @@ class CreateTaskAbstract extends ActionBase {
         return this.serialize(task);
     }
 
-    validate() {
-        if (!this.dueDate) {
+    validate(data) {
+        if (!data) {
+            throw new this.app.TransportError({
+                status: 400,
+                message: 'You should send data for create task',
+            })
+        }
+
+        if (!data.dueDate) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'For create task dueDate is required',
             })
         }
 
-        if (!this.author || typeof this.author !== 'string' || this.author.match(/^(\w|\s){2,15}$/) === null) {
+        if (!data.author || typeof data.author !== 'string' || data.author.match(/^(\w|\s){2,15}$/) === null) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'Author is required. And this should contains only letter, digit',
             })
         }
 
-        if (!moment(this.dueDate).isValid()) {
+        if (!moment(data.dueDate).isValid()) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'Date should be in next format YYYY-MM-DD HH:MM',
             })
         }
 
-        if (!this.title || typeof this.title !== 'string' || this.title.match(/^(\w|\s){3,150}$/) === null) {
+        if (!data.title || typeof data.title !== 'string' || data.title.match(/^(\w|\s){3,150}$/) === null) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'For create task title is required',
             })
         }
 
-        if (this.description && (typeof this.description !== 'string' || this.description.match(/^(\w|\s|\.|\,){3,1000}$/) === null)) {
+        if (data.description && (typeof data.description !== 'string' || data.description.match(/^(\w|\s|\.|\,){3,1000}$/) === null)) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'Task description should be string contains only letter, digit or underscore',
