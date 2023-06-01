@@ -1,19 +1,12 @@
-const GetTaskAbstract = require('./GetTaskAbstract');
+const ActionBase = require('../ActionBase');
 
-class GetTask extends GetTaskAbstract {
+class GetTaskAbstract extends ActionBase {
     constructor(props) {
         super(props);
+        this.taskId = props.taskId;
     }
 
-    async getTaskById() {
-        const task = await this.#findTask({ id: this.taskId });
-
-        this.#validate(task);
-
-        return task.serialize();
-    }
-
-    async #findTask (where) {
+    async findTask (where) {
         const { Task } = this.app.db;
         let task;
 
@@ -31,14 +24,13 @@ class GetTask extends GetTaskAbstract {
         return task;
     }
 
-    #validate(task) {
+    validate(task) {
         if (!task) {
             throw new this.app.TransportError({
                 message: 'Task not found',
                 status: 404,
             });
         }
-    }
-}
+    }}
 
-module.exports = GetTask;
+module.exports = GetTaskAbstract;

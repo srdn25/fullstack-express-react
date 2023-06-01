@@ -1,8 +1,8 @@
 class TaskActionStrategy {
     #strategy = null;
 
-    constructor(props) {
-        this.app = props.app;
+    constructor(app) {
+        this.app = app;
     }
 
     setStrategy (Strategy) {

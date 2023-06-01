@@ -9,7 +9,7 @@ class DeleteTaskAbstract extends ActionBase {
     async delete () {
         const { Task, sequelize } = this.app.db;
 
-        this.#validate();
+        this.validate();
 
         const transaction = await sequelize.transaction({ autocommit: false });
 
@@ -46,7 +46,7 @@ class DeleteTaskAbstract extends ActionBase {
     }
 
     // check dependencies before delete task
-    #validate () {
+    validate () {
         return true;
     }
 }

@@ -1,5 +1,5 @@
 const MessageHandlerAbstract = require('./MessageHandlerAbstract');
-const { WEBSOCKET_MESSAGE_TYPES, WEBSOCKET_MESSAGE_METHODS } = require('../../../utils/consts');
+const { WEBSOCKET_MESSAGE_TYPES, WEBSOCKET_MESSAGE_METHODS } = require('../../../../utils/consts');
 
 const TaskActionStrategy = require('../strategies/TaskActionStrategy');
 

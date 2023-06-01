@@ -1,5 +1,5 @@
 const { WebSocketServer } = require('ws');
-const WebsocketMessageHandler = require('../actions/task/websockets/MessageHandler');
+const WebsocketMessageHandler = require('../requestHandlers/actions/task/websockets/MessageHandler');
 
 module.exports = (app) => {
     const wss = new WebSocketServer({ port: app.config.WEBSOCKET_PORT });
@@ -20,7 +20,9 @@ module.exports = (app) => {
                 const json = JSON.parse(data);
                 messageHandler.validateMessage(json);
                 messageHandler.authenticate()
-                await messageHandler.handle(json);
+                const response = await messageHandler.handle(json);
+
+                ws.send(JSON.stringify(response));
             } catch (error) {
                 const message = error.message || 'Websocket error on working message handler';
 

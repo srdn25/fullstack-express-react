@@ -1,6 +1,6 @@
 const ActionBase = require('../ActionBase');
 const moment = require('moment/moment');
-const { prepareDate } = require('../../utils');
+const { prepareDate } = require('../../../utils');
 
 class UpdateTaskAbstract extends ActionBase {
     constructor(props) {
@@ -17,7 +17,7 @@ class UpdateTaskAbstract extends ActionBase {
         const { Task, sequelize } = this.app.db;
         let task;
 
-        this.#validate();
+        this.validate();
 
         const transaction = await sequelize.transaction({ autocommit: false });
 
@@ -67,7 +67,7 @@ class UpdateTaskAbstract extends ActionBase {
         }
     }
 
-    #validate () {
+    validate () {
         if (this.author && (typeof this.author !== 'string' || this.author.match(/^(\w|\s){2,15}$/) === null)) {
             throw new this.app.TransportError({
                 status: 400,

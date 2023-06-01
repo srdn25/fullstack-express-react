@@ -10,11 +10,12 @@ class CreateTaskAbstract extends ActionBase {
         this.author = props.author;
     }
 
+    // this method will in abstract class because create class should be able to create task
     async create() {
         const { Task } = this.app.db;
         let task;
 
-        this.#validate();
+        this.validate();
 
         try {
             task = await Task.create({
@@ -32,10 +33,10 @@ class CreateTaskAbstract extends ActionBase {
             });
         }
 
-        return this.#serialize(task);
+        return this.serialize(task);
     }
 
-    #validate() {
+    validate() {
         if (!this.dueDate) {
             throw new this.app.TransportError({
                 status: 400,
@@ -73,7 +74,7 @@ class CreateTaskAbstract extends ActionBase {
     }
 
     // prepare data for response
-    #serialize(task) {
+    serialize(task) {
         if (!task) {
             throw new this.app.TransportError({
                 status: 500,
