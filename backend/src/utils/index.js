@@ -24,10 +24,28 @@ function prepareDate (date) {
     return moment(date).milliseconds(0).toISOString();
 }
 
+function convertToJSON (string, throwError = false) {
+    try {
+        return (JSON.parse(string));
+    } catch (error) {
+        if (!throwError) {
+            return string;
+        }
+
+        // expected string should be valid JSON
+        throw new TransportError({
+            code: 400,
+            message: 'Error on convert string to JSON',
+            error,
+        })
+    }
+}
+
 module.exports = {
     consts,
     TransportError,
     checkPromiseResult,
     convertToString,
     prepareDate,
+    convertToJSON,
 }

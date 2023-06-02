@@ -29,6 +29,10 @@ describe('[POST] /task', () => {
             updatedAt: body.updatedAt,
         });
         expect(typeof body.id === 'number').to.be.true;
+
+        const taskFromDatabase = await helper.app.db.Task.findOne({ where: { id: body.id } });
+
+        expect(taskFromDatabase.serialize()).to.deep.eql(body);
     });
 
     it('Should able to create task with description', async () => {
@@ -57,6 +61,10 @@ describe('[POST] /task', () => {
             updatedAt: body.updatedAt,
         });
         expect(typeof body.id === 'number').to.be.true;
+
+        const taskFromDatabase = await helper.app.db.Task.findOne({ where: { id: body.id } });
+
+        expect(taskFromDatabase.serialize()).to.deep.eql(body);
     });
 
     it('Should get error if author not listed in request', async () => {

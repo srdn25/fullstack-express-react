@@ -60,6 +60,10 @@ describe('[PUT] /task/:taskId', () => {
             createdAt: body.createdAt,
             updatedAt: body.updatedAt,
         });
+
+        const taskFromDatabase = await helper.app.db.Task.findOne({ where: { id: taskId } });
+
+        expect(taskFromDatabase.serialize()).to.deep.eql(body);
     });
 
     it('Should return 404 if task not found', async () => {

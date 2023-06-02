@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const { consts: { TASK_STATUS } } = require('../../utils');
+const { consts: { TASK_STATUS }, prepareDate } = require('../../utils');
 
 module.exports = (sequelize, DataTypes, app) => {
   class Task extends Model {
@@ -76,12 +76,12 @@ module.exports = (sequelize, DataTypes, app) => {
     return {
       id,
       title,
-      description,
       status,
       author,
-      dueDate,
-      createdAt,
-      updatedAt,
+      dueDate: prepareDate(dueDate),
+      createdAt: prepareDate(createdAt),
+      updatedAt: prepareDate(updatedAt),
+      ...description && { description },
     };
   };
 

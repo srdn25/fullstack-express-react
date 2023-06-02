@@ -48,7 +48,7 @@ class UpdateTaskAbstract extends ActionBase {
             await task.save({ transaction });
             await transaction.commit();
 
-            return task;
+            return task.serialize();
         } catch (error) {
             await transaction.rollback();
 
