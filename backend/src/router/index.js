@@ -1,5 +1,5 @@
-const taskHandler = require('../requestHandlers/http/task');
-const infoHandler = require('../requestHandlers/http/info');
+const taskHandler = require('../controller/http/task');
+const infoHandler = require('../controller/http/info');
 
 const endpoints = [
     {

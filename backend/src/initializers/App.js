@@ -1,8 +1,8 @@
 const express = require('express');
 const db = require('../database/models');
 const routes = require('../router');
-const middlewares = require('../requestHandlers/middlewares');
-const errorMiddlewares = require('../requestHandlers/middlewares/errors');
+const middlewares = require('../controller/middlewares');
+const errorMiddlewares = require('../controller/middlewares/errors');
 const websocketServer = require('../services/websocketServer');
 const PubSub = require('../services/pubSub');
 

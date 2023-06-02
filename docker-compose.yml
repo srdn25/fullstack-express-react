@@ -31,4 +31,4 @@ services:
       - /app/node_modules
       - ./backend:/app
     ports:
-      - "3001:3001"
+      - "3031:3031"

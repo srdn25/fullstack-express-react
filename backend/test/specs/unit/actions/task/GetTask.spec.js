@@ -1,5 +1,5 @@
 const helper = require('../../../helper');
-const GetTaskAction = require('../../../../../src/requestHandlers/actions/task/GetTask');
+const GetTaskAction = require('../../../../../src/controller/actions/task/GetTask');
 
 const { assert } = helper;
 

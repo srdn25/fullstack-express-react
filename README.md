@@ -37,6 +37,11 @@ Backend config for IDEA
 ```DEV_DB_HOSTNAME=localhost;DEV_DB_NAME=fake_jira;DEV_DB_PASSWORD=password123;DEV_DB_USERNAME=user123;NODE_ENV=test;PORT=9000;PROD_DB_HOSTNAME=localhost;PROD_DB_NAME=fake_jira_prod;PROD_DB_PASSWORD=3579password;PROD_DB_USERNAME=realuser123;TEST_DB_HOSTNAME=localhost;TEST_DB_NAME=fake_jira_test;TEST_DB_PASSWORD=1356789test;TEST_DB_USERNAME=testuser123;WEBSOCKET_PORT=3155```
 
 ---
+## Start application
+execute command `docker compose up -d`
+backend will work on 3001 port
+
+---
 ## Notes
 - Added umzug script for clear database on tests before run tests. Then execute migrations
 - Added a lot of validation in business logic because don't have validator for requests.

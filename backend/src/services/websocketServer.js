@@ -1,5 +1,5 @@
 const { WebSocketServer } = require('ws');
-const WebsocketMessageHandler = require('../requestHandlers/actions/task/websockets/MessageHandler');
+const WebsocketMessageHandler = require('../controller/actions/task/websockets/MessageHandler');
 const { convertToJSON } = require('../utils');
 
 module.exports = (app) => {
