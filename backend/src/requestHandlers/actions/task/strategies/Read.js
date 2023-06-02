@@ -7,7 +7,7 @@ class GetTaskStrategy {
     }
 
     handleTaskChange (data) {
-        return this.getTask.getTaskById(data);
+        return this.getTask.getTaskById(data.id);
     }
 }
 

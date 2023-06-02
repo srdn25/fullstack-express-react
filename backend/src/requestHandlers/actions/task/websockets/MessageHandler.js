@@ -82,6 +82,7 @@ class MessageHandler extends MessageHandlerAbstract {
     }
 
     handle (payload) {
+        // the same methods as for http
         if (this.type === WEBSOCKET_MESSAGE_TYPES.send) {
             const Strategy = STRATEGIES[this.method];
 
@@ -92,8 +93,21 @@ class MessageHandler extends MessageHandlerAbstract {
             return taskActionStrategy.executeStrategy(payload);
         }
 
-        // move subscribe to other place
+        // subscribe to actions (update, delete, create)
         if (this.type === WEBSOCKET_MESSAGE_TYPES.subscribe) {
+            const supportMethods = [
+                WEBSOCKET_MESSAGE_METHODS.create,
+                WEBSOCKET_MESSAGE_METHODS.update,
+                WEBSOCKET_MESSAGE_METHODS.delete,
+            ];
+
+            if (!supportMethods.includes(this.method)) {
+                throw new this.app.TransportError({
+                    code: 400,
+                    message: 'Allowed only update, delete, and create methods for subscribe'
+                });
+            }
+
             function callback (data) {
                 this.websocketSend(JSON.stringify(data));
             }

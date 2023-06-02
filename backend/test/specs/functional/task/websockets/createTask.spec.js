@@ -3,9 +3,9 @@ const helper = require('../../../helper');
 const { WEBSOCKET_MESSAGE_TYPES, TASK_STATUS } = require('../../../../../src/utils/consts');
 const { prepareDate, convertToJSON } = require('../../../../../src/utils');
 
-const { expect, assert } = helper;
+const { expect } = helper;
 
-describe.only('[FUNCTIONAL] websocket create task', () => {
+describe('[FUNCTIONAL] websocket CREATE task', () => {
     it('Should be able create task by websockets', async () => {
         const client = new WebSocket(`ws://localhost:${helper.app.config.WEBSOCKET_PORT}`);
 

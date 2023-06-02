@@ -29,7 +29,7 @@ module.exports = (app) => {
 
                 ws.send(JSON.stringify({
                     message,
-                    status: 400,
+                    status: error.status || 400,
                 }));
 
                 app.logger.error({
