@@ -13,6 +13,10 @@ class PubSub {
      */
     subscribe(event, callback) {
         this.eventEmitter.addListener(event, callback);
+        return {
+            status: 200,
+            message: 'Successfully subscribed',
+        };
     }
 
     /**

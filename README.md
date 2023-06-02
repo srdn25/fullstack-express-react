@@ -39,5 +39,6 @@ Backend config for IDEA
 ---
 ## Notes
 - Added umzug script for clear database on tests before run tests. Then execute migrations
-- I added a lot of validation in business logic because don't have validator for requests.
+- Added a lot of validation in business logic because don't have validator for requests.
 When this task will be done, I want to add AJV validator and make more clear business logic
+- Added 'individualHooks' to beforeBulkDestroy/Update for more comfortable work with this hook. Wrote comment about it in model

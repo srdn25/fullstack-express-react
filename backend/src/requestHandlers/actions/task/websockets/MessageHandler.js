@@ -8,6 +8,8 @@ const ReadStrategy = require('../strategies/Read');
 const UpdateStrategy = require('../strategies/Update');
 const DeleteStrategy = require('../strategies/Delete');
 
+const subscribeCallback = require('./subscribeCallback');
+
 const STRATEGIES = {
     create: CreateStrategy,
     read: ReadStrategy,
@@ -26,7 +28,7 @@ class MessageHandler extends MessageHandlerAbstract {
         // instead of real auth. Allow only uniq user string
         this.users = new Set();
 
-        this.websocketSend = props.send;
+        this.webSocketSend = props.send;
     }
 
     /**
@@ -63,17 +65,17 @@ class MessageHandler extends MessageHandlerAbstract {
         }
 
         if (!data.method || !Object.values(WEBSOCKET_MESSAGE_METHODS).includes(data.method)) {
-            return {
+            throw new this.app.TransportError({
                 status: 400,
-                message: `Undefined or not allowed message method - ${data.method}`,
-            }
+                message: `Not allowed message method - ${data.method}`,
+            })
         }
 
         if (data.type === WEBSOCKET_MESSAGE_TYPES.subscribe && data.method === WEBSOCKET_MESSAGE_METHODS.read) {
-            return {
+            throw new this.app.TransportError({
                 status: 400,
                 message: `No make sense subscribe to this method - ${data.method}`,
-            }
+            })
         }
 
         this.type = data.type;
@@ -108,13 +110,7 @@ class MessageHandler extends MessageHandlerAbstract {
                 });
             }
 
-            function callback (data) {
-                this.websocketSend(JSON.stringify(data));
-            }
-
-            // set unique callback name - uniq username (we allow only one connection for user)
-            // for many connections need to combine userId with uuid
-            Object.defineProperty(callback, 'name', { value: this.user });
+            const callback = subscribeCallback(this.user);
 
             const userCallbacks = this.app.callbackList.get(this.user);
 
@@ -127,7 +123,7 @@ class MessageHandler extends MessageHandlerAbstract {
                 // this is first user subscribe
                 this.app.callbackList.set(this.user, {
                     ...userCallbacks && userCallbacks,
-                    [this.method]: callback,
+                    [this.method]: callback.bind(this),
                 })
             }
 

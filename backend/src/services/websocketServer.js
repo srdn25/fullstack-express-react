@@ -7,7 +7,9 @@ module.exports = (app) => {
 
     wss.on('connection', (ws) => {
         ws.send('Welcome, you are connected!');
-        const messageHandler = new WebsocketMessageHandler({ app, send: ws.send });
+
+        // create message handler for each user
+        const messageHandler = new WebsocketMessageHandler({ app, send: ws.send.bind(ws) });
 
         ws.on('error', (error) => app.logger.error({
             message: 'Websocket client connection error',

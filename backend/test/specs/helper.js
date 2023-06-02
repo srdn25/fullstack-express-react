@@ -3,7 +3,7 @@ const supertest = require('supertest');
 const faker = require('faker');
 
 const App = require('../../src/initializers/App');
-const { fromDateToString } = require('../../src/utils');
+const { fromDateToString, prepareDate } = require('../../src/utils');
 const migrations = require('../../scripts/migration');
 const sinon = require('sinon');
 
@@ -80,6 +80,23 @@ const helper = {
                 }
             }, 5);
         });
+    },
+    async createTask (data) {
+        let task;
+
+        if (data) {
+            task = await helper.app.db.Task.create(data);
+        } else {
+            task = await helper.app.db.Task.create({
+                id: this.generateId(),
+                title: this.generateText(true),
+                description: this.generateText(),
+                dueDate: prepareDate(this.generateFutureDate(3)),
+                author: 'AuthorName',
+            });
+        }
+
+        return task.serialize();
     },
 };
 

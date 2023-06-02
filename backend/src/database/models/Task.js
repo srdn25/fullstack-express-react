@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 const { consts: { TASK_STATUS }, prepareDate } = require('../../utils');
+const { WEBSOCKET_MESSAGE_METHODS } = require('../../utils/consts');
 
 module.exports = (sequelize, DataTypes, app) => {
   class Task extends Model {
@@ -50,13 +51,91 @@ module.exports = (sequelize, DataTypes, app) => {
     hooks: {
       afterCreate(instance, options) {
         // send data to all subscribers
-        app.callbackList.forEach((el) => el.create(instance.serialize()));
+        app.callbackList.forEach((el) => {
+          if (el.create) {
+            el.create({
+              method: WEBSOCKET_MESSAGE_METHODS.create,
+              ...instance.serialize(),
+            })
+          }
+        });
+      },
+      afterBulkCreate(instances, options) {
+        // send data to all subscribers
+        for (const instance of instances) {
+          app.callbackList.forEach((el) => {
+            if (el.create) {
+              el.create({
+                method: WEBSOCKET_MESSAGE_METHODS.create,
+                ...instance.serialize(),
+              })
+            }
+          });
+        }
       },
       afterDestroy(instance, options) {
-        app.callbackList.forEach((el) => el.delete(instance.serialize()));
+        app.callbackList.forEach((el) => {
+          if (el.delete) {
+            el.delete({
+              method: WEBSOCKET_MESSAGE_METHODS.delete,
+              ...instance.serialize(),
+            })
+          }
+        });
+      },
+
+      /**
+       * This can drastically impact performance,
+       * depending on the number of records involved
+       * (since, among other things, all instances will be loaded into memory)
+       *
+       * FOR REAL APPLICATION BETTER DELETE THIS HOOK!
+       * Then handle it in afterBulkDestroy hook
+       */
+      beforeBulkDestroy: function(options){
+        options.individualHooks = true;
+        return options;
+      },
+      /**
+       * {
+       *   "where": {
+       *     "id": 76904
+       *   },
+       *   "hooks": true,
+       *   "individualHooks": false,
+       *   "force": false,
+       *   "cascade": false,
+       *   "restartIdentity": false,
+       *   "type": "BULKDELETE"
+       * }
+       */
+      afterBulkDestroy(options) {
+        // handle deleted entities
       },
       afterUpdate(instance, options) {
-        app.callbackList.forEach((el) => el.update(instance.serialize()));
+        app.callbackList.forEach((el) => {
+          if (el.update) {
+            el.update({
+              method: WEBSOCKET_MESSAGE_METHODS.update,
+              ...instance.serialize(),
+            })
+          }
+        });
+      },
+      /**
+       * This can drastically impact performance,
+       * depending on the number of records involved
+       * (since, among other things, all instances will be loaded into memory)
+       *
+       * FOR REAL APPLICATION BETTER DELETE THIS HOOK!
+       * Then handle it in afterBulkDestroy hook
+       */
+      beforeBulkUpdate: function(options){
+        options.individualHooks = true;
+        return options;
+      },
+      afterBulkUpdate(instances, options) {
+        // handle deleted entities
       },
     }
   });
