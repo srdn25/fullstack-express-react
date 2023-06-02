@@ -5,7 +5,7 @@ const { prepareDate, convertToJSON } = require('../../../../../src/utils');
 
 const { expect } = helper;
 
-describe('[FUNCTIONAL] websocket READ task', () => {
+describe('[FUNCTIONAL] websocket DELETE task', () => {
     const taskId = helper.generateId();
     const taskTitle = helper.generateText();
     const taskDescription = helper.generateText(false);
@@ -32,14 +32,18 @@ describe('[FUNCTIONAL] websocket READ task', () => {
         ])
     });
 
-    it('Should be able to read task by websockets', async () => {
+    it('Should be able to delete task by websockets', async () => {
         const client = new WebSocket(`ws://localhost:${helper.app.config.WEBSOCKET_PORT}`);
+
+        const taskFromDatabaseBeforeDelete = await helper.app.db.Task.findOne({ where: { id: taskId } });
+
+        expect(!!taskFromDatabaseBeforeDelete).to.be.true;
 
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'Sam',
-            method: WEBSOCKET_MESSAGE_METHODS.read,
+            user: 'Patric',
+            method: WEBSOCKET_MESSAGE_METHODS.delete,
             type: WEBSOCKET_MESSAGE_TYPES.send,
             id: taskId,
         });
@@ -63,27 +67,25 @@ describe('[FUNCTIONAL] websocket READ task', () => {
 
         expect(responseMessages).to.be.eql([
             {
-                id: taskId,
-                status: taskStatus,
-                title: taskTitle,
-                description: taskDescription,
-                author: taskAuthor,
-                dueDate: taskDueDate,
-                createdAt: responseMessages[0].createdAt,
-                updatedAt: responseMessages[0].updatedAt,
+                status: 204,
+                message: 'Task deleted',
             },
             'pong',
         ]);
+
+        const taskFromDatabase = await helper.app.db.Task.findOne({ where: { id: taskId } });
+
+        expect(!!taskFromDatabase).to.be.false;
     });
 
-    it('Should return error if task not found on read task by websockets', async () => {
+    it('Should return error if task not found on delete task by websockets', async () => {
         const client = new WebSocket(`ws://localhost:${helper.app.config.WEBSOCKET_PORT}`);
 
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'Sam',
-            method: WEBSOCKET_MESSAGE_METHODS.read,
+            user: 'Akai',
+            method: WEBSOCKET_MESSAGE_METHODS.delete,
             type: WEBSOCKET_MESSAGE_TYPES.send,
             id: notExistingTaskId,
         });
@@ -108,7 +110,7 @@ describe('[FUNCTIONAL] websocket READ task', () => {
         expect(responseMessages).to.be.eql([
             {
                 status: 404,
-                message: 'Task not found',
+                message: 'Not found task for delete',
             },
             'pong',
         ]);

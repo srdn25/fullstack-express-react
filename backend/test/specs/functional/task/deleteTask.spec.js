@@ -4,7 +4,7 @@ const { consts: { TASK_STATUS } } = require('../../../../src/utils');
 
 const { expect } = helper;
 
-describe('[PUT] /task/:taskId', () => {
+describe('[DELETE] /task/:taskId', () => {
     const taskId = helper.generateId();
     const notExistingTaskId = helper.generateId();
     const taskTitle = helper.generateText();

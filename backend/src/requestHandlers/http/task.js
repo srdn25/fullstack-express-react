@@ -87,6 +87,8 @@ async function deleteTask (app, req, res) {
 
     const result = await deleteTaskAction.delete(taskId);
 
+    delete result?.status;
+
     res.send(result);
 }
 
