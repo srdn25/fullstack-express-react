@@ -62,7 +62,7 @@ class UpdateTaskAbstract extends ActionBase {
     }
 
     validate (data) {
-        if (data.taskId && (typeof data.taskId !== 'string' || data.taskId.match(/^[0-9]+$/) === null)) {
+        if (!data.taskId || (typeof data.taskId !== 'string' && typeof data.taskId !== 'number')) {
             throw new this.app.TransportError({
                 status: 400,
                 message: 'TaskId is required. And this should contains digit',

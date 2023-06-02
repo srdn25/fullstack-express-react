@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const helper = require('../../../helper');
-const { WEBSOCKET_MESSAGE_TYPES, TASK_STATUS } = require('../../../../../src/utils/consts');
+const { WEBSOCKET_MESSAGE_TYPES, TASK_STATUS, WEBSOCKET_MESSAGE_METHODS } = require('../../../../../src/utils/consts');
 const { prepareDate, convertToJSON } = require('../../../../../src/utils');
 
 const { expect } = helper;
@@ -20,7 +20,7 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
         const payloadMessage = JSON.stringify({
             ...payload,
             user: 'Patric',
-            method: 'create',
+            method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.send,
         });
 
@@ -75,7 +75,7 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
         const payloadMessage = JSON.stringify({
             ...payload,
             user: 'Patric',
-            method: 'create',
+            method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.send,
         });
 
@@ -123,7 +123,7 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
         const payloadMessage = JSON.stringify({
             ...payload,
             user: 'Patric',
-            method: 'create',
+            method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.send,
         });
 
@@ -171,7 +171,7 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
         const payloadMessage = JSON.stringify({
             ...payload,
             user: 'Patric',
-            method: 'create',
+            method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.send,
         });
 
