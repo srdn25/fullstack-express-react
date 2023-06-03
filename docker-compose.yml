@@ -24,6 +24,7 @@ services:
   api:
     depends_on:
       - db
+    restart: always
     build:
       dockerfile: Dockerfile
       context: ./backend
@@ -32,3 +33,14 @@ services:
       - ./backend:/app
     ports:
       - "3031:3031"
+
+  react:
+    depends_on:
+      - api
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      NODE_ENV: development
