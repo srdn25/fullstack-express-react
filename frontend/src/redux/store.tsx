@@ -1,11 +1,16 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { Socket } from '../utils/Socket';
 import { socketMiddleware } from '../middleware/socket';
+import { taskReducer } from './reducer/task';
+
+const socket = new Socket();
 
 export const store = configureStore({
-    reducer: {},
+    reducer: {
+        task: taskReducer,
+    },
     middleware: [
-        socketMiddleware(new Socket()),
+        socketMiddleware(socket),
     ],
 })
 

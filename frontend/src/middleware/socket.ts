@@ -6,7 +6,7 @@ export const socketMiddleware =
         (params: { dispatch: AppDispatch, getState: () => RootState }) =>
             (next: Function) =>
                 (action: { type: string, payload: object }) => {
-                    const { dispatch, getState } = params
+                    // const { dispatch, getState } = params
                     const { type } = action
 
                     switch (type) {
