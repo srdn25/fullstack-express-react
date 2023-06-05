@@ -53,7 +53,7 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to update task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 3 messages - than close connection
-            if (responseMessages.length >= 3) {
+            if (responseMessages.length >= 2) {
                 client.close();
             }
         });
@@ -73,7 +73,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to update task', () => {
                 status: 200,
                 message: 'Successfully subscribed',
             },
-            'pong',
             {
                 method: WEBSOCKET_MESSAGE_METHODS.update,
                 id: taskId1,
@@ -82,8 +81,8 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to update task', () => {
                 author: taskAuthor1,
                 dueDate: taskDueDate1,
                 description: taskDescription1,
-                createdAt: responseMessages[2].createdAt,
-                updatedAt: responseMessages[2].updatedAt,
+                createdAt: responseMessages[1].createdAt,
+                updatedAt: responseMessages[1].updatedAt,
             },
         ]);
     });

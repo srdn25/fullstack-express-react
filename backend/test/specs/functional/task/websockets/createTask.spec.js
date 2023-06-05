@@ -30,7 +30,7 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -49,7 +49,6 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
                 createdAt: responseMessages[0].createdAt,
                 updatedAt: responseMessages[0].updatedAt,
             },
-            'pong',
         ]);
 
         const taskFromDatabase = await helper.app.db.Task.findOne({ where: { id: responseMessages[0].id } });
@@ -85,7 +84,7 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -101,7 +100,6 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
                 status: 400,
                 message: 'Author is required. And this should contains only letter, digit',
             },
-            'pong',
         ]);
 
         const taskCountAfter = await helper.app.db.Task.count();
@@ -133,7 +131,7 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -149,7 +147,6 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
                 status: 400,
                 message: 'For create task title is required',
             },
-            'pong',
         ]);
 
         const taskCountAfter = await helper.app.db.Task.count();
@@ -181,7 +178,7 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -197,7 +194,6 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
                 status: 400,
                 message: 'For create task dueDate is required',
             },
-            'pong',
         ]);
 
         const taskCountAfter = await helper.app.db.Task.count();

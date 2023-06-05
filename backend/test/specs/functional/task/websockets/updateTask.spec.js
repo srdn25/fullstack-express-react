@@ -57,7 +57,7 @@ describe('[FUNCTIONAL] websocket UPDATE task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -79,7 +79,6 @@ describe('[FUNCTIONAL] websocket UPDATE task', () => {
                 createdAt: responseMessages[0].createdAt,
                 updatedAt: responseMessages[0].updatedAt,
             },
-            'pong',
         ]);
     });
 });

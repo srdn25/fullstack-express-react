@@ -62,7 +62,7 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to delete task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 4 messages - than close connection
-            if (responseMessages.length >= 4) {
+            if (responseMessages.length >= 3) {
                 client.close();
             }
         });
@@ -85,7 +85,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to delete task', () => {
                 status: 200,
                 message: 'Successfully subscribed',
             },
-            'pong',
             {
                 method: WEBSOCKET_MESSAGE_METHODS.delete,
                 id: taskId1,
@@ -105,8 +104,8 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to delete task', () => {
                 author: taskAuthor2,
                 dueDate: taskDueDate2,
                 description: taskDescription2,
-                createdAt: responseMessages[3].createdAt,
-                updatedAt: responseMessages[3].updatedAt,
+                createdAt: responseMessages[2].createdAt,
+                updatedAt: responseMessages[2].updatedAt,
             }
         ]);
     });

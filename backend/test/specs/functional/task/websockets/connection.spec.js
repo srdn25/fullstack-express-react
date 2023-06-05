@@ -38,7 +38,6 @@ describe('[FUNCTIONAL] websocket connection', () => {
         // Wait when client will close
         await helper.waitForSocketState(client, client.CLOSED);
 
-        expect(responseMessage).to.be.eql('pong');
         assert.calledOnce(helper.app.logger.debug);
         assert.calledWith(helper.app.logger.debug, `WS received message: ${testMessage}`);
     });

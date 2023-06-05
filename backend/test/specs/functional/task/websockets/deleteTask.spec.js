@@ -54,7 +54,7 @@ describe('[FUNCTIONAL] websocket DELETE task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -70,7 +70,6 @@ describe('[FUNCTIONAL] websocket DELETE task', () => {
                 status: 204,
                 message: 'Task deleted',
             },
-            'pong',
         ]);
 
         const taskFromDatabase = await helper.app.db.Task.findOne({ where: { id: taskId } });
@@ -96,7 +95,7 @@ describe('[FUNCTIONAL] websocket DELETE task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -112,7 +111,6 @@ describe('[FUNCTIONAL] websocket DELETE task', () => {
                 status: 404,
                 message: 'Not found task for delete',
             },
-            'pong',
         ]);
     });
 });

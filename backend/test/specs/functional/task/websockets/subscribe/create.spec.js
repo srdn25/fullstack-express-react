@@ -24,7 +24,7 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 5 messages - than close connection
-            if (responseMessages.length >= 5) {
+            if (responseMessages.length >= 4) {
                 client.close();
             }
         });
@@ -49,7 +49,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
                 status: 200,
                 message: 'Successfully subscribed',
             },
-            'pong',
             ...createdTasks,
         ]);
     });
@@ -71,7 +70,7 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -87,7 +86,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
                 status: 400,
                 message: `No make sense subscribe to this method - ${payloadMessage.method}`,
             },
-            'pong',
         ]);
     });
 
@@ -108,7 +106,7 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
             responseMessages.push(convertToJSON(data.toString()));
 
             // should get 2 messages - than close connection
-            if (responseMessages.length >= 2) {
+            if (responseMessages.length >= 1) {
                 client.close();
             }
         });
@@ -124,7 +122,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
                 status: 400,
                 message: `Not allowed message method - ${payloadMessage.method}`,
             },
-            'pong',
         ]);
     });
 });
