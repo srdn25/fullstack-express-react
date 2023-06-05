@@ -24,12 +24,13 @@ function prepareDate (date) {
     return moment(date).milliseconds(0).toISOString();
 }
 
-function convertToJSON (string, throwError = false) {
+function convertToJSON (buffer, throwError = false) {
     try {
-        return (JSON.parse(string));
+        const baseToString = buffer.toString();
+        return JSON.parse(baseToString);
     } catch (error) {
         if (!throwError) {
-            return string;
+            return buffer.toString();
         }
 
         // expected string should be valid JSON

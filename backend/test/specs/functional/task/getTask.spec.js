@@ -36,6 +36,7 @@ describe('[GET] /task', () => {
             .expect(404);
 
         expect(body).to.deep.eql({
+            status: 404,
             message: 'Task not found',
         });
     });

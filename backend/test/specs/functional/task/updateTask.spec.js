@@ -81,6 +81,7 @@ describe('[PUT] /task/:taskId', () => {
         expect(body).to.be.an('object');
         expect(body).to.have.property('message');
         expect(body).to.deep.eql({
+            status: 404,
             message: 'Not found task for update',
         });
     });
@@ -98,6 +99,7 @@ describe('[PUT] /task/:taskId', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'For create task title is required',
         });
     });
@@ -115,6 +117,7 @@ describe('[PUT] /task/:taskId', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'Author is required. And this should contains only letter, digit',
         });
     });
@@ -132,6 +135,7 @@ describe('[PUT] /task/:taskId', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'Task description should be string contains only letter, digit or underscore',
         });
     });

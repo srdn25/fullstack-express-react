@@ -8,7 +8,7 @@ RUN npm ci
 
 COPY .. /home/app
 
-ENV PORT=3031
+ENV PORT=3030
 
 ENV DEV_DB_USERNAME=user123
 ENV DEV_DB_PASSWORD=password123
@@ -28,3 +28,5 @@ ENV PROD_DB_HOSTNAME=db
 ENV WEBSOCKET_PORT=3155
 
 CMD ["npm", "run", "start"]
+
+EXPOSE 3030

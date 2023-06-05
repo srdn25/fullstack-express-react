@@ -11,18 +11,11 @@ const { convertToString, TransportError } = require('../utils');
 class App {
     constructor(config) {
         this.config = config;
-        // this.logger = ['info', 'error', 'log', 'debug']
-        //     .reduce((logger, type) => {
-        //         logger[type] = (msg) => console.log(convertToString(msg));
-        //         return logger;
-        //     }, {});
-
-        this.logger = {
-            info: (msg) => console.log(convertToString(msg)),
-            error: (msg) => console.log(convertToString(msg)),
-            log: (msg) => console.log(convertToString(msg)),
-            debug: (msg) => console.log(convertToString(msg)),
-        }
+        this.logger = ['info', 'error', 'log', 'debug']
+            .reduce((logger, type) => {
+                logger[type] = (msg) => console.log(convertToString(msg));
+                return logger;
+            }, {});
     }
 
     async init () {

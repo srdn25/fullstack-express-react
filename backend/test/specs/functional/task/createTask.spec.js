@@ -81,6 +81,7 @@ describe('[POST] /task', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'Author is required. And this should contains only letter, digit',
         });
     });
@@ -99,6 +100,7 @@ describe('[POST] /task', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'Task title is required',
         });
     });
@@ -117,6 +119,7 @@ describe('[POST] /task', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'Task due date is required',
         });
     });
@@ -136,6 +139,7 @@ describe('[POST] /task', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'For create task title is required',
         });
     });
@@ -155,6 +159,7 @@ describe('[POST] /task', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'Author is required. And this should contains only letter, digit',
         });
     });
@@ -175,6 +180,7 @@ describe('[POST] /task', () => {
             .expect(400);
 
         expect(body).to.deep.eql({
+            status: 400,
             message: 'Task description should be string contains only letter, digit or underscore',
         });
     });

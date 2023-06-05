@@ -39,6 +39,7 @@ describe('[DELETE] /task/:taskId', () => {
         expect(body).to.be.an('object');
         expect(body).to.have.property('message');
         expect(body).to.deep.eql({
+            status: 404,
             message: 'Not found task for delete',
         });
     });

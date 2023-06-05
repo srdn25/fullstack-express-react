@@ -5,6 +5,7 @@ const { convertToJSON } = require('../utils');
 module.exports = (app) => {
     const wss = new WebSocketServer({ port: app.config.WEBSOCKET_PORT });
 
+    console.log(app.config.WEBSOCKET_PORT, wss)
     wss.on('connection', (ws) => {
         ws.send('Welcome, you are connected!');
 
