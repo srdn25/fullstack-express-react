@@ -1,24 +1,23 @@
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Routes } from 'react-router-dom';
+
 import './App.css';
+
+import NotFound from './components/NotFound/NotFound';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 }
