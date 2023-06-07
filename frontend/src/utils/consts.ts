@@ -13,6 +13,18 @@ export const TASK_DEFAULT_STATUSES = {
     done: 'done',
 };
 
+export const WEBSOCKET_MESSAGE_TYPES = {
+    subscribe: 'subscribe',
+    send: 'send',
+};
+
+export const WEBSOCKET_MESSAGE_METHODS = {
+    create: 'create',
+    read: 'read',
+    update: 'update',
+    delete: 'delete',
+};
+
 export interface IAction<T, P> {
     readonly type: T;
     readonly payload?: P;

@@ -20,7 +20,7 @@ export default function Dashboard() {
         return () => {
             dispatch({ type: 'socket/disconnect' })
         }
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="dashboard">

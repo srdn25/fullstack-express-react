@@ -22,7 +22,7 @@ class Socket {
         }
     }
 
-    send(message: string): void {
+    send(message: object): void {
         if (this.socket) {
             this.socket.send(JSON.stringify(message))
         }
