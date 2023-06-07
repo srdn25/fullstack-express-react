@@ -7,7 +7,17 @@ class GetTaskStrategy {
     }
 
     handleTaskChange (data) {
-        return this.getTask.getTaskById(data.id);
+        if (data.id) {
+            return this.getTask.getTaskById(data.id);
+        }
+
+        if (data.where) {
+
+            // temporary hack
+            if (data.where === '*') {
+                return this.getTask.getAllTasks();
+            }
+        }
     }
 }
 

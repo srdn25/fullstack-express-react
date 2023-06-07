@@ -18,6 +18,11 @@ const endpoints = [
         handler: taskHandler.getTask,
     },
     {
+        method: 'get',
+        path: '/task',
+        handler: taskHandler.getAllTasks,
+    },
+    {
         method: 'put',
         path: '/task/:taskId',
         handler: taskHandler.updateTask,

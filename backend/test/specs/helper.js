@@ -98,6 +98,16 @@ const helper = {
 
         return task.serialize();
     },
+    async clearDataInTable (table) {
+        if (!table || typeof table !== 'string' || !helper.app.db[table]) {
+            throw new Error('Table not found in database');
+        }
+
+        return helper.app.db[table].destroy({
+            where: {},
+            truncate: true,
+        })
+    }
 };
 
 module.exports = helper;

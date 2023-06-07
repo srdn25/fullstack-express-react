@@ -1,10 +1,10 @@
 {
   "name": "backend",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "node server with express",
   "main": "index.js",
   "scripts": {
-    "start": "npm run migrate:dev:up && node index.js",
+    "start": "npm run migrate:dev:up && node --inspect=9229 index.js",
     "migrate:dev:up": "set NODE_ENV=development&& node scripts/umzug.js up",
     "migrate:test:up": "set NODE_ENV=test&& node scripts/umzug.js up",
     "migrate:dev:down": "set NODE_ENV=development&& node scripts/umzug.js down --to 0",

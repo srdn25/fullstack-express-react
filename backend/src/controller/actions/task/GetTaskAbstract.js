@@ -21,6 +21,8 @@ class GetTaskAbstract extends ActionBase {
             });
         }
 
+        this.validate(task);
+
         return task;
     }
 

@@ -55,6 +55,14 @@ async function getTask (app, req, res) {
     res.send(task);
 }
 
+async function getAllTasks (app, req, res) {
+    const getTaskAction = new GetTaskAction({ app });
+
+    const tasks = await getTaskAction.getAllTasks();
+
+    res.send(tasks)
+}
+
 async function updateTask (app, req, res) {
     const { taskId } = req.params;
     const data = req.body;
@@ -95,6 +103,7 @@ async function deleteTask (app, req, res) {
 module.exports = {
     createTask,
     getTask,
+    getAllTasks,
     updateTask,
     deleteTask,
 }

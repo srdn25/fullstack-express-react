@@ -8,9 +8,11 @@ class GetTask extends GetTaskAbstract {
     async getTaskById(id) {
         const task = await this.findTask({ id });
 
-        this.validate(task);
-
         return task.serialize();
+    }
+
+    getAllTasks() {
+        return this.app.db.Task.findAll({ raw: true });
     }
 }
 
