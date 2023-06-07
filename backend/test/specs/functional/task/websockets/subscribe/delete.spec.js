@@ -82,30 +82,40 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to delete task', () => {
 
         expect(responseMessages).to.be.eql([
             {
-                status: 200,
-                message: 'Successfully subscribed',
+                method: WEBSOCKET_MESSAGE_METHODS.delete,
+                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
+                payload: {
+                    status: 200,
+                    message: 'Successfully subscribed',
+                },
             },
             {
                 method: WEBSOCKET_MESSAGE_METHODS.delete,
-                id: taskId1,
-                title: taskTitle1,
-                status: taskStatus1,
-                author: taskAuthor1,
-                dueDate: taskDueDate1,
-                description: taskDescription1,
-                createdAt: responseMessages[2].createdAt,
-                updatedAt: responseMessages[2].updatedAt,
+                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
+                payload: {
+                    id: taskId1,
+                    title: taskTitle1,
+                    status: taskStatus1,
+                    author: taskAuthor1,
+                    dueDate: taskDueDate1,
+                    description: taskDescription1,
+                    createdAt: responseMessages[2].payload.createdAt,
+                    updatedAt: responseMessages[2].payload.updatedAt,
+                }
             },
             {
                 method: WEBSOCKET_MESSAGE_METHODS.delete,
-                id: taskId2,
-                title: taskTitle2,
-                status: taskStatus2,
-                author: taskAuthor2,
-                dueDate: taskDueDate2,
-                description: taskDescription2,
-                createdAt: responseMessages[2].createdAt,
-                updatedAt: responseMessages[2].updatedAt,
+                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
+                payload: {
+                    id: taskId2,
+                    title: taskTitle2,
+                    status: taskStatus2,
+                    author: taskAuthor2,
+                    dueDate: taskDueDate2,
+                    description: taskDescription2,
+                    createdAt: responseMessages[2].payload.createdAt,
+                    updatedAt: responseMessages[2].payload.updatedAt,
+                },
             }
         ]);
     });

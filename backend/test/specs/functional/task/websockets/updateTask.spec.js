@@ -70,14 +70,18 @@ describe('[FUNCTIONAL] websocket UPDATE task', () => {
 
         expect(responseMessages).to.be.eql([
             {
-                id: taskId,
-                status: taskStatus,
-                title: taskTitle,
-                description: payload.description,
-                author: payload.author,
-                dueDate: payload.dueDate,
-                createdAt: responseMessages[0].createdAt,
-                updatedAt: responseMessages[0].updatedAt,
+                method: WEBSOCKET_MESSAGE_METHODS.update,
+                type: WEBSOCKET_MESSAGE_TYPES.send,
+                payload: {
+                    id: taskId,
+                    status: taskStatus,
+                    title: taskTitle,
+                    description: payload.description,
+                    author: payload.author,
+                    dueDate: payload.dueDate,
+                    createdAt: responseMessages[0].payload.createdAt,
+                    updatedAt: responseMessages[0].payload.updatedAt,
+                },
             },
         ]);
     });

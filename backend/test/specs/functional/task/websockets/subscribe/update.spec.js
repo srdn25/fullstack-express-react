@@ -70,19 +70,26 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to update task', () => {
 
         expect(responseMessages).to.be.eql([
             {
-                status: 200,
-                message: 'Successfully subscribed',
+                method: WEBSOCKET_MESSAGE_METHODS.update,
+                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
+                payload: {
+                    status: 200,
+                    message: 'Successfully subscribed',
+                },
             },
             {
                 method: WEBSOCKET_MESSAGE_METHODS.update,
-                id: taskId1,
-                title: payload.title,
-                status: payload.status,
-                author: taskAuthor1,
-                dueDate: taskDueDate1,
-                description: taskDescription1,
-                createdAt: responseMessages[1].createdAt,
-                updatedAt: responseMessages[1].updatedAt,
+                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
+                payload: {
+                    id: taskId1,
+                    title: payload.title,
+                    status: payload.status,
+                    author: taskAuthor1,
+                    dueDate: taskDueDate1,
+                    description: taskDescription1,
+                    createdAt: responseMessages[1].payload.createdAt,
+                    updatedAt: responseMessages[1].payload.updatedAt,
+                },
             },
         ]);
     });

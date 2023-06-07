@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 const { consts: { TASK_STATUS }, prepareDate } = require('../../utils');
-const { WEBSOCKET_MESSAGE_METHODS } = require('../../utils/consts');
+const { WEBSOCKET_MESSAGE_METHODS, WEBSOCKET_MESSAGE_TYPES } = require('../../utils/consts');
 
 module.exports = (sequelize, DataTypes, app) => {
   class Task extends Model {
@@ -54,8 +54,11 @@ module.exports = (sequelize, DataTypes, app) => {
         app.callbackList.forEach((el) => {
           if (el.create) {
             el.create({
+              type: WEBSOCKET_MESSAGE_TYPES.subscribe,
               method: WEBSOCKET_MESSAGE_METHODS.create,
-              ...instance.serialize(),
+              payload: {
+                ...instance.serialize(),
+              },
             })
           }
         });
@@ -66,8 +69,11 @@ module.exports = (sequelize, DataTypes, app) => {
           app.callbackList.forEach((el) => {
             if (el.create) {
               el.create({
+                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
                 method: WEBSOCKET_MESSAGE_METHODS.create,
-                ...instance.serialize(),
+                payload: {
+                  ...instance.serialize(),
+                },
               })
             }
           });
@@ -77,8 +83,11 @@ module.exports = (sequelize, DataTypes, app) => {
         app.callbackList.forEach((el) => {
           if (el.delete) {
             el.delete({
+              type: WEBSOCKET_MESSAGE_TYPES.subscribe,
               method: WEBSOCKET_MESSAGE_METHODS.delete,
-              ...instance.serialize(),
+              payload: {
+                ...instance.serialize(),
+              },
             })
           }
         });
@@ -116,8 +125,11 @@ module.exports = (sequelize, DataTypes, app) => {
         app.callbackList.forEach((el) => {
           if (el.update) {
             el.update({
+              type: WEBSOCKET_MESSAGE_TYPES.subscribe,
               method: WEBSOCKET_MESSAGE_METHODS.update,
-              ...instance.serialize(),
+              payload: {
+                ...instance.serialize(),
+              },
             })
           }
         });

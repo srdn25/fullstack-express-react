@@ -30,6 +30,7 @@ class DeleteTaskAbstract extends ActionBase {
             await transaction.commit();
 
             return {
+                id,
                 status: 204,
                 message: 'Task deleted',
             };

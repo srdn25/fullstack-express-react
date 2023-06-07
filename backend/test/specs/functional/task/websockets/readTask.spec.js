@@ -78,14 +78,18 @@ describe('[FUNCTIONAL] websocket READ task', () => {
 
         expect(responseMessages).to.be.eql([
             {
-                id: taskId,
-                status: taskStatus,
-                title: taskTitle,
-                description: taskDescription,
-                author: taskAuthor,
-                dueDate: taskDueDate,
-                createdAt: responseMessages[0].createdAt,
-                updatedAt: responseMessages[0].updatedAt,
+                method: WEBSOCKET_MESSAGE_METHODS.read,
+                type: WEBSOCKET_MESSAGE_TYPES.send,
+                payload: {
+                    id: taskId,
+                    status: taskStatus,
+                    title: taskTitle,
+                    description: taskDescription,
+                    author: taskAuthor,
+                    dueDate: taskDueDate,
+                    createdAt: responseMessages[0].payload.createdAt,
+                    updatedAt: responseMessages[0].payload.updatedAt,
+                },
             },
         ]);
     });
@@ -119,28 +123,32 @@ describe('[FUNCTIONAL] websocket READ task', () => {
         // Wait when client will close
         await helper.waitForSocketState(client, client.CLOSED);
 
-        expect(responseMessages).to.be.eql([
-            [{
-                id: taskId,
-                status: taskStatus,
-                title: taskTitle,
-                description: taskDescription,
-                author: taskAuthor,
-                dueDate: taskDueDate,
-                createdAt: responseMessages[0][0].createdAt,
-                updatedAt: responseMessages[0][0].updatedAt,
-            },
-            {
-                id: taskId2,
-                author: taskAuthor2,
-                title: taskTitle2,
-                status: taskStatus2,
-                description: taskDescription2,
-                dueDate: taskDueDate2,
-                createdAt: responseMessages[0][1].createdAt,
-                updatedAt: responseMessages[0][1].updatedAt,
-            }].sort((a, b) => a.id - b.id)
-        ]);
+        const expectedPayload = [ {
+            id: taskId,
+            status: taskStatus,
+            title: taskTitle,
+            description: taskDescription,
+            author: taskAuthor,
+            dueDate: taskDueDate,
+            createdAt: responseMessages[0].payload[0].createdAt,
+            updatedAt: responseMessages[0].payload[0].updatedAt,
+        },
+        {
+            id: taskId2,
+            author: taskAuthor2,
+            title: taskTitle2,
+            status: taskStatus2,
+            description: taskDescription2,
+            dueDate: taskDueDate2,
+            createdAt: responseMessages[0].payload[1].createdAt,
+            updatedAt: responseMessages[0].payload[1].updatedAt,
+        } ].sort((a, b) => a.id > b.id ? 1 : -1);
+
+        expect(responseMessages).to.be.eql([{
+            type: WEBSOCKET_MESSAGE_TYPES.send,
+            method: WEBSOCKET_MESSAGE_METHODS.read,
+            payload: expectedPayload,
+        }]);
     });
 
     it('Should return error if task not found on read task by websockets', async () => {

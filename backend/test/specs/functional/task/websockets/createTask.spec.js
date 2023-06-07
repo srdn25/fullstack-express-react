@@ -43,21 +43,25 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
 
         expect(responseMessages).to.be.eql([
             {
-                ...payload,
-                status: TASK_STATUS.todo,
-                id: responseMessages[0].id,
-                createdAt: responseMessages[0].createdAt,
-                updatedAt: responseMessages[0].updatedAt,
+                type: WEBSOCKET_MESSAGE_TYPES.send,
+                method: WEBSOCKET_MESSAGE_METHODS.create,
+                payload: {
+                    ...payload,
+                    status: TASK_STATUS.todo,
+                    id: responseMessages[0].payload.id,
+                    createdAt: responseMessages[0].payload.createdAt,
+                    updatedAt: responseMessages[0].payload.updatedAt,
+                },
             },
         ]);
 
-        const taskFromDatabase = await helper.app.db.Task.findOne({ where: { id: responseMessages[0].id } });
+        const taskFromDatabase = await helper.app.db.Task.findOne({ where: { id: responseMessages[0].payload.id } });
 
         expect(!!taskFromDatabase).to.be.true;
 
         const serializedTask = taskFromDatabase.serialize();
 
-        expect(serializedTask).to.deep.eql(responseMessages[0]);
+        expect(serializedTask).to.deep.eql(responseMessages[0].payload);
     });
 
     it('Should get error if request not contains "author" when create task by websockets', async () => {

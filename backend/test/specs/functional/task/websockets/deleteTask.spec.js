@@ -67,8 +67,13 @@ describe('[FUNCTIONAL] websocket DELETE task', () => {
 
         expect(responseMessages).to.be.eql([
             {
-                status: 204,
-                message: 'Task deleted',
+                method: WEBSOCKET_MESSAGE_METHODS.delete,
+                type: WEBSOCKET_MESSAGE_TYPES.send,
+                payload: {
+                    id: taskId,
+                    status: 204,
+                    message: 'Task deleted',
+                },
             },
         ]);
 

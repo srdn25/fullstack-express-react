@@ -83,7 +83,7 @@ class MessageHandler extends MessageHandlerAbstract {
         this.user = data.user;
     }
 
-    handle (payload) {
+    async handle (payload) {
         // the same methods as for http
         if (this.type === WEBSOCKET_MESSAGE_TYPES.send) {
             const Strategy = STRATEGIES[this.method];
@@ -92,7 +92,12 @@ class MessageHandler extends MessageHandlerAbstract {
 
             taskActionStrategy.setStrategy(Strategy);
 
-            return taskActionStrategy.executeStrategy(payload);
+            const result = await taskActionStrategy.executeStrategy(payload);
+
+            return {
+                type: this.type,
+                ...result,
+            }
         }
 
         // subscribe to actions (update, delete, create)
@@ -127,7 +132,13 @@ class MessageHandler extends MessageHandlerAbstract {
                 })
             }
 
-            return this.app.pubsub.subscribe(this.method, callback);
+            const payload = this.app.pubsub.subscribe(this.method, callback);
+
+            return {
+                type: this.type,
+                method: this.method,
+                payload,
+            }
         }
 
         this.app.logger.error({

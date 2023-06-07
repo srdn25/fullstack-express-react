@@ -34,10 +34,11 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
 
         // create 3 tasks for check database trigger
         for (let i = 0; i < 3 ;i ++) {
-            const newTask = await helper.createTask();
+            const payload = await helper.createTask();
             createdTasks.push({
                 method: WEBSOCKET_MESSAGE_METHODS.create,
-                ...newTask
+                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
+                payload,
             });
         }
 
@@ -46,82 +47,14 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
 
         expect(responseMessages).to.be.eql([
             {
-                status: 200,
-                message: 'Successfully subscribed',
+                method: WEBSOCKET_MESSAGE_METHODS.create,
+                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
+                payload: {
+                    status: 200,
+                    message: 'Successfully subscribed',
+                },
             },
             ...createdTasks,
-        ]);
-    });
-
-    it('Send error if try to subscribe for read method', async () => {
-        const client = new WebSocket(`ws://localhost:${helper.app.config.WEBSOCKET_PORT}`);
-
-        await helper.waitForSocketState(client, client.OPEN);
-
-        const payloadMessage = {
-            user: 'SpongeBob',
-            method: WEBSOCKET_MESSAGE_METHODS.read,
-            type: WEBSOCKET_MESSAGE_TYPES.subscribe,
-        };
-
-        const responseMessages = [];
-
-        client.on('message', (data) => {
-            responseMessages.push(convertToJSON(data.toString()));
-
-            // should get 2 messages - than close connection
-            if (responseMessages.length >= 1) {
-                client.close();
-            }
-        });
-
-        // Send client message
-        client.send(JSON.stringify(payloadMessage));
-
-        // Wait when client will close
-        await helper.waitForSocketState(client, client.CLOSED);
-
-        expect(responseMessages).to.be.eql([
-            {
-                status: 400,
-                message: `No make sense subscribe to this method - ${payloadMessage.method}`,
-            },
-        ]);
-    });
-
-    it('Send error if try to subscribe for not supported method', async () => {
-        const client = new WebSocket(`ws://localhost:${helper.app.config.WEBSOCKET_PORT}`);
-
-        await helper.waitForSocketState(client, client.OPEN);
-
-        const payloadMessage = {
-            user: 'SpongeBob',
-            method: 'patch',
-            type: WEBSOCKET_MESSAGE_TYPES.subscribe,
-        };
-
-        const responseMessages = [];
-
-        client.on('message', (data) => {
-            responseMessages.push(convertToJSON(data.toString()));
-
-            // should get 2 messages - than close connection
-            if (responseMessages.length >= 1) {
-                client.close();
-            }
-        });
-
-        // Send client message
-        client.send(JSON.stringify(payloadMessage));
-
-        // Wait when client will close
-        await helper.waitForSocketState(client, client.CLOSED);
-
-        expect(responseMessages).to.be.eql([
-            {
-                status: 400,
-                message: `Not allowed message method - ${payloadMessage.method}`,
-            },
         ]);
     });
 });

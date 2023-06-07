@@ -1,23 +1,29 @@
 const GetTask = require('../GetTask');
+const { WEBSOCKET_MESSAGE_METHODS } = require('../../../../utils/consts');
 
 class GetTaskStrategy {
     constructor(app) {
         this.app = app;
         this.getTask = new GetTask({ app })
+        this.method = WEBSOCKET_MESSAGE_METHODS.read;
     }
 
-    handleTaskChange (data) {
+    async handleTaskChange (data) {
+        let payload = null;
+
         if (data.id) {
-            return this.getTask.getTaskById(data.id);
-        }
-
-        if (data.where) {
-
+            payload = await this.getTask.getTaskById(data.id);
+        } else if (data.where) {
             // temporary hack
             if (data.where === '*') {
-                return this.getTask.getAllTasks();
+                payload = await this.getTask.getAllTasks();
             }
         }
+
+        return {
+            method: this.method,
+            payload,
+        };
     }
 }
 

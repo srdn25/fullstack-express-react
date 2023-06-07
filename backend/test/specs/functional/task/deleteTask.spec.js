@@ -64,6 +64,7 @@ describe('[DELETE] /task/:taskId', () => {
         expect(body).to.be.an('object');
         expect(body).to.have.property('message');
         expect(body).to.deep.eql({
+            id: `${taskId}`,
             message: 'Task deleted',
         });
 
