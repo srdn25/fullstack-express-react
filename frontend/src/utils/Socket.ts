@@ -1,7 +1,3 @@
-interface EventListener {
-    (evt: Event): void;
-}
-
 class Socket {
     socket: WebSocket | null;
 
@@ -28,7 +24,7 @@ class Socket {
         }
     }
 
-    on(eventName: string, callback: EventListener): void {
+    on(eventName: string, callback: any) {
         this.socket?.addEventListener(eventName, callback)
     }
 }
