@@ -8,9 +8,9 @@ export const ADD_TASK = 'ADD_TASK';
 export const UPDATE_ALLOWED_STATUSES = 'UPDATE_ALLOWED_STATUSES';
 
 export const TASK_DEFAULT_STATUSES = {
-    todo: 'todo',
-    inProgress: 'in_progress',
-    done: 'done',
+    in_progress: 'In Progress',
+    done: 'Done',
+    todo: 'Todo',
 };
 
 export const WEBSOCKET_MESSAGE_TYPES = {
