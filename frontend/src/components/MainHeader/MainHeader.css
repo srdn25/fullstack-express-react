@@ -1,0 +1,6 @@
+.main-header {
+    border: 1px solid var(--brown-darkest);
+    margin: 1.5em;
+    padding: 15px;
+    background: var(--brown-light);
+}
