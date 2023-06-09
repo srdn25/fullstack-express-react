@@ -9,13 +9,13 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 
 import NotFound from './components/NotFound/NotFound';
-import Dashboard from './components/Dashboard/Dashboard';
+import HomePage from './components/HomePage/HomePage';
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
