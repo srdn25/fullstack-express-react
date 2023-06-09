@@ -7,7 +7,7 @@ export interface ITask {
     dueDate: string;
     author: string;
     // @ts-ignore
-    status: consts.TASK_DEFAULT_STATUSES.todo | consts.TASK_DEFAULT_STATUSES.inProgress | consts.TASK_DEFAULT_STATUSES.done;
+    status: consts.TASK_DEFAULT_STATUSES.todo | consts.TASK_DEFAULT_STATUSES.in_progress | consts.TASK_DEFAULT_STATUSES.done;
     createdAt: string;
     updatedAt: string;
 }
@@ -25,47 +25,59 @@ export const initState: IState = {
 export function taskReducer (state: IState = initState, action: consts.IAction<string, any>): IState {
     switch (action.type) {
         case consts.UPDATE_ALL_TASKS:
-            if (action.payload) {
-                state.taskList = action.payload;
+            return {
+                ...state,
+                taskList: action.payload,
             }
-
-            return state;
 
         case consts.UPDATE_TASK:
-            if (action?.payload?.id) {
-                const index = state.taskList.findIndex((task) => task.id === action.payload.id);
-
-                if (index !== -1) {
-                    state.taskList[index] = action.payload;
-                }
+            if (!action?.payload?.id) {
+                return state;
             }
 
-            return state;
+            const updateIndex = state.taskList.findIndex((task) => task.id === action.payload.id);
+
+            const newState = { ...state };
+            if (updateIndex !== -1) {
+                newState.taskList[updateIndex] = action.payload;
+            }
+
+            return newState;
 
         case consts.ADD_TASK:
-            if (action.payload) {
-                state.taskList.push(action.payload);
-            }
-
-            return state;
+            return {
+                ...state,
+                taskList: [
+                    ...state.taskList,
+                    action.payload,
+                ]
+            };
 
         case consts.DELETE_TASK:
-            if (action.payload?.id) {
-                const index = state.taskList.findIndex((task) => task.id === action.payload.id);
-
-                if (index !== -1) {
-                    state.taskList.splice(index, 1);
-                }
+            if (!action.payload?.id) {
+                return state;
             }
 
-            return state;
+            const deleteIndex = state.taskList.findIndex((task) => task.id === action.payload.id);
+
+            if (deleteIndex === -1) {
+                return state;
+            }
+
+            const newTaskList = [ ...state.taskList ];
+
+            newTaskList.splice(deleteIndex, 1);
+
+            return {
+                ...state,
+                taskList: newTaskList,
+            };
 
         case consts.UPDATE_ALLOWED_STATUSES:
-            if (action.payload) {
-                state.allowedStatus = action.payload;
-            }
-
-            return state;
+            return {
+                ...state,
+                allowedStatus: action.payload,
+            };
 
         default:
             return state;
