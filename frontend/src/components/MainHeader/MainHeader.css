@@ -1,6 +1,12 @@
 .main-header {
-    border: 1px solid var(--brown-darkest);
+    border: 1px solid var(--black-sea);
     margin: 1.5em;
     padding: 15px;
-    background: var(--brown-light);
+    background: var(--orange);
+    color: var(--carrot);
+    text-shadow: 1px 1px 1px var(--black-sea);
+    -webkit-text-stroke: 1px var(--ocean);
+    font-style: italic;
+    font-variant: small-caps;
+    box-shadow: inset 1px 1px 10px 7px var(--yellow-pastel), 1px 1px 5px 1px var(--black-sea);
 }

@@ -1,10 +1,10 @@
 :root {
   --gray: #B7C4CF;
-  --brown-darkest: #594545;
-  --brown-darkier: #815B5B;
-  --brown-dark: #967E76;
-  --brown-medium: #D7C0AE;
-  --brown-light: #EEE3CB;
+  --orange: #f4a261;
+  --carrot: #e76f51;
+  --yellow-pastel: #e9c46a;
+  --ocean: #2a9d8f;
+  --black-sea: #264653;
 }
 
 .App {

@@ -64,10 +64,10 @@ function Dashboard(props: IProps): React.ReactElement {
                 onRowClick={openTask}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 0, pageSize: 5 },
+                        paginationModel: { page: 0, pageSize: 7 },
                     },
                 }}
-                pageSizeOptions={[5, 10]}
+                pageSizeOptions={[7, 15]}
             />
             <TaskModal
                 modalOpen={modalOpen}
