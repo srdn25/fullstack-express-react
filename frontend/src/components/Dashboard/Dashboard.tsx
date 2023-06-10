@@ -13,8 +13,8 @@ import { prepareReadableDate } from '../../utils/lib';
 import TaskModal from '../TaskModal/TaskModal';
 
 function Dashboard(props: IProps): React.ReactElement {
-    const [modalOpen, setModalOpen] = React.useState(false);
-    const [modalTask, setModalTask] = React.useState(null);
+    const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+    const [modalTask, setModalTask] = React.useState<ITask | null>(null);
 
     const dispatch = useDispatch();
 
@@ -46,9 +46,15 @@ function Dashboard(props: IProps): React.ReactElement {
     };
 
     const openTask = (row: GridRowParams) => {
-        const data = row.row;
-        setModalTask(data);
-        setModalOpen(true);
+        const data = props.taskList.find((task): boolean => task.id === row.id) || null;
+
+        if (data) {
+            setModalTask(data);
+            setModalOpen(true);
+        } else {
+            console.error('Cannot find task by ID in openTask function')
+        }
+
     }
 
     const closeTask = () => {
@@ -80,7 +86,7 @@ function Dashboard(props: IProps): React.ReactElement {
 
 interface IProps {
     taskList: ITask[];
-    allowedStatus: any;
+    allowedStatus: { [key: string]: string };
 }
 
 const mapStateToProps = (state: RootState) => {

@@ -14,7 +14,7 @@ export interface ITask {
 
 interface IState {
     taskList: ITask[],
-    allowedStatus: object,
+    allowedStatus: { [key: string]: string },
 }
 
 export const initState: IState = {

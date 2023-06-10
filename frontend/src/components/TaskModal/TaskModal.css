@@ -1,0 +1,10 @@
+.task-modal-line {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 15px 0px;
+}
+
+.task-modal-title {
+    text-align: center;
+}
