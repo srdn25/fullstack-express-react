@@ -6,6 +6,7 @@ import { socketReducer } from './reducer/socket';
 
 const socket = new Socket();
 
+// @ts-ignore
 export const store = configureStore({
     reducer: {
         task: taskReducer,

@@ -2,6 +2,7 @@ import { Socket } from '../../utils/Socket';
 import * as consts from '../../utils/consts';
 import { ITaskBase } from './task';
 import { Moment } from 'moment/moment';
+import { AnyAction } from '@reduxjs/toolkit';
 
 export interface ISocketActionPayloadNewTask extends ITaskBase {
     user: string,
@@ -31,7 +32,7 @@ export const initState: IState = {
     connection: new Socket(),
 }
 
-export function socketReducer (state: IState = initState, action: consts.IAction<string, Socket>): IState {
+export function socketReducer (state: IState = initState, action: AnyAction): IState {
     switch (action.type) {
         case consts.SET_NEW_SOCKET:
             return {

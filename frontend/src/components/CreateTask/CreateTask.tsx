@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Moment } from 'moment/moment';
+import moment from 'moment-timezone';
 import './CreateTask.css';
 
 import { Button } from '@mui/material';
@@ -8,7 +9,8 @@ import TaskDetails from '../TaskDetails/TaskDetails';
 import { taskValidate } from '../../validation';
 import { TASK_DEFAULT_STATUSES } from '../../utils/consts';
 import { prepareDate } from '../../utils/lib';
-import moment from 'moment-timezone';
+import { createNewTask } from '../../redux/action/socket';
+import Alert from '../Alert/Alert';
 
 function CreateTask (): React.ReactElement {
     const [status, setStatus] = useState<string>(TASK_DEFAULT_STATUSES.todo);
@@ -18,6 +20,8 @@ function CreateTask (): React.ReactElement {
     const [dueDate, setDueDate] = useState<string|Moment>(moment());
 
     const [validateErrors, setValidateErrors] = useState<object|null>({ error: 1 });
+
+    const [showSavedAlert, setShowSavedAlert] = useState<boolean>(false);
 
     useEffect(() => {
         const task = {
@@ -60,8 +64,19 @@ function CreateTask (): React.ReactElement {
         setDueDate(preparedDate);
     }
     function handleSaveTask () {
-        // todo: call action for send webhook request to server with new data
-        alert('save...');
+        createNewTask({
+            title,
+            author,
+            status,
+            description,
+            user: author,
+            dueDate: prepareDate(dueDate),
+        });
+
+        handleClearForm();
+        setShowSavedAlert(true);
+
+        setTimeout(() => setShowSavedAlert(false), 5000);
     }
 
     return (
@@ -77,6 +92,13 @@ function CreateTask (): React.ReactElement {
                 updateDueDate={updateDueDate}
                 status={status}
                 updateStatus={setStatus}
+            />
+
+            <Alert
+                show={showSavedAlert}
+                setShow={setShowSavedAlert}
+                text='Task created'
+                type='success'
             />
 
             <div className='control-btns'>

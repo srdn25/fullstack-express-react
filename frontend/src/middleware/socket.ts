@@ -5,6 +5,7 @@ import { fromStringToJson } from '../utils/lib';
 import { getAllTasks } from '../redux/action/task';
 import { newSocketConnection } from '../redux/action/socket';
 import { WEBSOCKET_MESSAGE_METHODS, WEBSOCKET_MESSAGE_TYPES } from '../utils/consts';
+import { ITask } from '../redux/reducer/task';
 
 export const socketMiddleware =
     (socket: Socket): any =>
@@ -32,9 +33,9 @@ export const socketMiddleware =
 
                             socket.on('message', (event: any) => {
                                 if (event.data) {
-                                    const data = fromStringToJson(event.data);
+                                    const data: { type: string, method: string, payload: ITask[] } = fromStringToJson(event.data);
 
-                                    if (data && data.method === WEBSOCKET_MESSAGE_METHODS.read && data.type === WEBSOCKET_MESSAGE_TYPES.send && data.payload) {
+                                    if (data && data.method === WEBSOCKET_MESSAGE_METHODS.read && data.type === WEBSOCKET_MESSAGE_TYPES.send) {
                                         dispatch(getAllTasks(data.payload));
                                     }
                                 }

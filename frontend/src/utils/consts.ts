@@ -33,8 +33,3 @@ export const WEBSOCKET_MESSAGE_METHODS = {
     update: 'update',
     delete: 'delete',
 };
-
-export interface IAction<T, P> {
-    readonly type: T;
-    readonly payload: P;
-}

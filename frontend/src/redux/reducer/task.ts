@@ -1,5 +1,6 @@
 import { Moment } from 'moment';
 import * as consts from '../../utils/consts';
+import { AnyAction } from '@reduxjs/toolkit';
 
 export interface ITaskBase {
     title: string;
@@ -25,20 +26,23 @@ export const initState: IState = {
     taskList: [],
 }
 
-export function taskReducer (state: IState = initState, action: consts.IAction<string, any>): IState {
+export function taskReducer (state: IState = initState, action: AnyAction): IState {
     switch (action.type) {
         case consts.UPDATE_ALL_TASKS:
-            return {
-                ...state,
-                taskList: action.payload,
+            if (Array.isArray(action.payload)) {
+                return {
+                    ...state,
+                    taskList: action.payload,
+                }
             }
+            return state;
 
         case consts.UPDATE_TASK:
-            if (!action?.payload?.id) {
+            if (Array.isArray(action.payload)) {
                 return state;
             }
 
-            const updateIndex = state.taskList.findIndex((task) => task.id === action.payload.id);
+            const updateIndex = state.taskList.findIndex((task) => !Array.isArray(action.payload) && task.id === action.payload.id);
 
             const newState = { ...state };
             if (updateIndex !== -1) {
@@ -48,6 +52,10 @@ export function taskReducer (state: IState = initState, action: consts.IAction<s
             return newState;
 
         case consts.ADD_TASK:
+            if (Array.isArray(action.payload)) {
+                return state;
+            }
+
             return {
                 ...state,
                 taskList: [
@@ -57,11 +65,11 @@ export function taskReducer (state: IState = initState, action: consts.IAction<s
             };
 
         case consts.DELETE_TASK:
-            if (!action.payload?.id) {
+            if (Array.isArray(action.payload)) {
                 return state;
             }
 
-            const deleteIndex = state.taskList.findIndex((task) => task.id === action.payload.id);
+            const deleteIndex = state.taskList.findIndex((task) => !Array.isArray(action.payload) && task.id === action.payload.id);
 
             if (deleteIndex === -1) {
                 return state;
