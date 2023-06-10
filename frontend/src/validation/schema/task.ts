@@ -22,12 +22,11 @@ const schema: JSONSchemaType<ITaskBase> = {
         dueDate: {
             type: 'string',
             // time should be in UTC
-            // pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}\\w[0-9]{2}:[0-9]{2}$',
             nullable: false,
         },
         description: {
             type: 'string',
-            pattern: '^(\\w|\\s|,|.|!|\\?|\\)|\\(|-){2,150}$',
+            pattern: '^(\\w|\\s|,|.|!|\\?|\\)|\\(|-){0,150}$',
             nullable: true,
         }
     },

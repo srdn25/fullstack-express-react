@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Moment } from 'moment/moment';
+import './CreateTask.css';
 
 import { Button } from '@mui/material';
 
@@ -24,7 +25,7 @@ function CreateTask (): React.ReactElement {
             author,
             description,
             status,
-            dueDate,
+            dueDate: prepareDate(dueDate),
         };
 
         const isValid = taskValidate(task);
@@ -50,13 +51,12 @@ function CreateTask (): React.ReactElement {
         setAuthor('');
         setTitle('');
         setDescription('');
-        setStatus('');
+        setStatus(TASK_DEFAULT_STATUSES.todo);
         setDueDate(moment());
     }
 
     function updateDueDate (date: Moment) {
         const preparedDate = prepareDate(date);
-        debugger
         setDueDate(preparedDate);
     }
     function handleSaveTask () {
@@ -79,21 +79,23 @@ function CreateTask (): React.ReactElement {
                 updateStatus={setStatus}
             />
 
-            <Button
-                variant="outlined"
-                color="error"
-                onClick={handleClearForm}
-            >
-                Clear form
-            </Button>
-            <Button
-                disabled={!!validateErrors}
-                variant="contained"
-                color="success"
-                onClick={handleSaveTask}
-            >
-                Save
-            </Button>
+            <div className='control-btns'>
+                <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleClearForm}
+                >
+                    Clear form
+                </Button>
+                <Button
+                    disabled={!!validateErrors}
+                    variant="contained"
+                    color="success"
+                    onClick={handleSaveTask}
+                >
+                    Save
+                </Button>
+            </div>
         </div>
     )
 }

@@ -3,6 +3,7 @@ import * as consts from '../utils/consts';
 import { AppDispatch, RootState } from '../redux/store';
 import { fromStringToJson } from '../utils/lib';
 import { getAllTasks } from '../redux/action/task';
+import { newSocketConnection } from '../redux/action/socket';
 import { WEBSOCKET_MESSAGE_METHODS, WEBSOCKET_MESSAGE_TYPES } from '../utils/consts';
 
 export const socketMiddleware =
@@ -25,6 +26,8 @@ export const socketMiddleware =
                                     type: consts.WEBSOCKET_MESSAGE_TYPES.send,
                                     where: '*',
                                 });
+
+                                dispatch(newSocketConnection(socket));
                             });
 
                             socket.on('message', (event: any) => {

@@ -1,6 +1,5 @@
 import { Moment } from 'moment';
 import * as consts from '../../utils/consts';
-import { convertReadableStatusesToServerEnum } from '../../utils/lib';
 
 export interface ITaskBase {
     title: string;

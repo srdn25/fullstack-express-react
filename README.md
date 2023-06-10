@@ -47,3 +47,5 @@ backend will work on 3001 port
 - Added a lot of validation in business logic because don't have validator for requests.
 When this task will be done, I want to add AJV validator and make more clear business logic
 - Added 'individualHooks' to beforeBulkDestroy/Update for more comfortable work with this hook. Wrote comment about it in model
+- As for me - better send Create, Update, Delete operations by http requests. By webSocket only listen tasks updates.
+But as I understood - in this task, want to use only websockets. I added http as well (only server side), for show how I can do it.
