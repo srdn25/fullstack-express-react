@@ -31,6 +31,7 @@ function Dashboard(props: IProps): React.ReactElement {
         { field: 'title', headerName: 'Title', width: 130 },
         { field: 'status', headerName: 'Status', width: 130 },
         { field: 'dueDate', headerName: 'Due Date', width: 170 },
+        { field: 'author', headerName: 'Author', width: 170 },
     ];
 
     const prepareData = (tasks: ITask[]): ITask[] => {

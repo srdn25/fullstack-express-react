@@ -1,0 +1,19 @@
+.navigation-menu {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: auto;
+}
+
+.navigation-menu div[role=tabpanel] {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.navigation-menu div[role=tablist] {
+    background: var(--yellow-pastel);
+}
+
+.navigation-menu .Mui-selected {
+    background: var(--orange);
+    color: var(--black-sea);
+}

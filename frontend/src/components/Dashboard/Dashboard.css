@@ -1,4 +1,10 @@
 .dashboard {
     width: 100%;
+    max-width: var(--max-width);
     height: 475px;
+    margin: auto;
+}
+
+.dashboard .MuiDataGrid-columnHeaders {
+    background: rgba(1, 1, 1, 0.1);
 }

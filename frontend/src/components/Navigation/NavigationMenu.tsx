@@ -1,6 +1,7 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import { Tab, Tabs } from '@mui/material';
+import './NavigationMenu.css';
+
+import { Tab, Tabs, Box } from '@mui/material';
 
 import NavigationTab from './NavigationTab';
 import CreateTask from '../CreateTask/CreateTask';
@@ -14,7 +15,7 @@ function NavigationMenu (): React.ReactElement {
     };
 
     return (
-        <div className='navigation-tab'>
+        <div className='navigation-menu'>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">

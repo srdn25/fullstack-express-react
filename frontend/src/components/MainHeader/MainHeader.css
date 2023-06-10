@@ -1,6 +1,7 @@
 .main-header {
+    margin: 15px auto;
+    max-width: var(--max-width);
     border: 1px solid var(--black-sea);
-    margin: 1.5em;
     padding: 15px;
     background: var(--orange);
     color: var(--carrot);
