@@ -1,25 +1,29 @@
+import { Moment } from 'moment';
 import * as consts from '../../utils/consts';
+import { convertReadableStatusesToServerEnum } from '../../utils/lib';
 
-export interface ITask {
-    id: number;
+export interface ITaskBase {
     title: string;
     description?: string | null;
-    dueDate: string;
+    dueDate: string|Moment;
     author: string;
-    // @ts-ignore
-    status: consts.TASK_DEFAULT_STATUSES.todo | consts.TASK_DEFAULT_STATUSES.in_progress | consts.TASK_DEFAULT_STATUSES.done;
+    status?: string;
+}
+
+export interface ITask extends ITaskBase {
+    id: number;
+    status: string;
+    dueDate: string;
     createdAt: string;
     updatedAt: string;
 }
 
 interface IState {
     taskList: ITask[],
-    allowedStatus: { [key: string]: string },
 }
 
 export const initState: IState = {
     taskList: [],
-    allowedStatus: consts.TASK_DEFAULT_STATUSES,
 }
 
 export function taskReducer (state: IState = initState, action: consts.IAction<string, any>): IState {
@@ -71,12 +75,6 @@ export function taskReducer (state: IState = initState, action: consts.IAction<s
             return {
                 ...state,
                 taskList: newTaskList,
-            };
-
-        case consts.UPDATE_ALLOWED_STATUSES:
-            return {
-                ...state,
-                allowedStatus: action.payload,
             };
 
         default:

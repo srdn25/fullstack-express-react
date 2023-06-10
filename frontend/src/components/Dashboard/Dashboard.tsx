@@ -11,6 +11,7 @@ import { ITask } from '../../redux/reducer/task'
 import { prepareReadableDate } from '../../utils/lib';
 
 import TaskModal from '../TaskModal/TaskModal';
+import { TASK_DEFAULT_STATUSES_READABLE } from '../../utils/consts';
 
 function Dashboard(props: IProps): React.ReactElement {
     const [modalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -40,7 +41,7 @@ function Dashboard(props: IProps): React.ReactElement {
                 ...task,
                 id: task.id,
                 title: task.title,
-                status: props.allowedStatus[task.status],
+                status: TASK_DEFAULT_STATUSES_READABLE[task.status],
                 dueDate: prepareReadableDate(task.dueDate),
             }
         });
@@ -87,13 +88,11 @@ function Dashboard(props: IProps): React.ReactElement {
 
 interface IProps {
     taskList: ITask[];
-    allowedStatus: { [key: string]: string };
 }
 
 const mapStateToProps = (state: RootState) => {
     return {
         taskList: state.task.taskList,
-        allowedStatus: state.task.allowedStatus,
     }
 };
 

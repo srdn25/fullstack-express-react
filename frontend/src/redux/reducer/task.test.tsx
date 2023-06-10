@@ -199,27 +199,3 @@ test('task reducer should delete task', () => {
         taskList: expectedTaskList,
     });
 });
-
-test('Reducer should update allowed statuses for task', () => {
-    const newStatus = {
-        inTest: 'in_test',
-    }
-
-    const action = {
-        type: consts.UPDATE_ALLOWED_STATUSES,
-        payload: {
-            ...initState.allowedStatus,
-            ...newStatus,
-        },
-    };
-
-    const updatedState = taskReducer(Object.assign({}, initState), action);
-
-    expect(updatedState).toEqual({
-        ...initState,
-        allowedStatus: {
-            ...initState.allowedStatus,
-            ...newStatus,
-        }
-    });
-});
