@@ -19,7 +19,6 @@ class Socket {
     }
 
     send(message: object): void {
-        debugger
         if (this.socket) {
             this.socket.send(JSON.stringify(message))
         }

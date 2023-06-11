@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Moment } from 'moment/moment';
 import moment from 'moment-timezone';
+import { useDispatch } from 'react-redux';
 import './CreateTask.css';
 
 import { Button } from '@mui/material';
 
 import TaskDetails from '../TaskDetails/TaskDetails';
+import LinearLoader from '../LinearLoader/LinearLoader';
 import { taskValidate } from '../../validation';
 import { TASK_DEFAULT_STATUSES } from '../../utils/consts';
-import { prepareDate } from '../../utils/lib';
-import { createNewTask } from '../../redux/action/socket';
+import { prepareDate, updateLoading } from '../../utils/lib';
 import Alert from '../Alert/Alert';
+import { addTask } from '../../redux/action/task';
+import taskApi from '../../services/taskApi';
+import { setGlobalError } from '../../redux/action/error';
 
 function CreateTask (): React.ReactElement {
     const [status, setStatus] = useState<string>(TASK_DEFAULT_STATUSES.todo);
@@ -22,6 +26,12 @@ function CreateTask (): React.ReactElement {
     const [validateErrors, setValidateErrors] = useState<object|null>({ error: 1 });
 
     const [showSavedAlert, setShowSavedAlert] = useState<boolean>(false);
+
+    const [saveInProcess, setSaveInProcess] = useState<boolean>(false);
+
+    const [saveProgress, setSaveProgress] = useState<number>(0);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const task = {
@@ -63,20 +73,32 @@ function CreateTask (): React.ReactElement {
         const preparedDate = prepareDate(date);
         setDueDate(preparedDate);
     }
-    function handleSaveTask () {
-        createNewTask({
+    async function handleSaveTask () {
+        setSaveInProcess(true);
+        const interval = updateLoading(setSaveProgress);
+
+        const task = await taskApi.createTask({
             title,
             author,
             status,
             description,
-            user: author,
             dueDate: prepareDate(dueDate),
-        });
+        })
 
-        handleClearForm();
-        setShowSavedAlert(true);
+        setSaveInProcess(false);
 
-        setTimeout(() => setShowSavedAlert(false), 5000);
+        if (!task) {
+            clearInterval(interval);
+            dispatch(setGlobalError('Cannot create task'));
+            setTimeout(() => dispatch(setGlobalError(null)), 5000);
+        } else {
+            dispatch(addTask(task));
+
+            handleClearForm();
+            setShowSavedAlert(true);
+
+            setTimeout(() => setShowSavedAlert(false), 5000);
+        }
     }
 
     return (
@@ -100,6 +122,8 @@ function CreateTask (): React.ReactElement {
                 text='Task created'
                 type='success'
             />
+
+            {saveInProcess && <LinearLoader value={saveProgress} />}
 
             <div className='control-btns'>
                 <Button

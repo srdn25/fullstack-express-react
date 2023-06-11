@@ -1,4 +1,6 @@
+import React from 'react';
 import moment, { Moment } from 'moment-timezone';
+import { HTTP_REQUEST_TIMEOUT } from './consts';
 
 export const fromStringToJson = (string: string) => {
     try {
@@ -24,4 +26,20 @@ export const convertReadableStatusesToServerEnum = (statuses: { [k: string]: str
             acc[value] = value;
             return acc;
         }, {});
+}
+
+export function updateLoading (updater: React.Dispatch<React.SetStateAction<number>>) {
+    // maximum request time (ms) divided by 100 percent
+    const percentInMs = HTTP_REQUEST_TIMEOUT / 100;
+
+    const interval = setInterval(() => {
+        updater((prevPercent: number) => {
+            return prevPercent + 1;
+            if (prevPercent >= 99) {
+                clearInterval(interval);
+            }
+        });
+    }, percentInMs);
+
+    return interval;
 }

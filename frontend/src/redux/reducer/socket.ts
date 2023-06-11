@@ -1,4 +1,4 @@
-import { Socket } from '../../utils/Socket';
+import { Socket } from '../../services/Socket';
 import * as consts from '../../utils/consts';
 import { ITaskBase } from './task';
 import { Moment } from 'moment/moment';

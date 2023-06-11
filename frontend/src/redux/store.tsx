@@ -1,8 +1,9 @@
 import { configureStore, Action, ThunkAction } from '@reduxjs/toolkit';
-import { Socket } from '../utils/Socket';
+import { Socket } from '../services/Socket';
 import { socketMiddleware } from '../middleware/socket';
 import { taskReducer } from './reducer/task';
 import { socketReducer } from './reducer/socket';
+import { errorReducer } from './reducer/error';
 
 const socket = new Socket();
 
@@ -11,6 +12,7 @@ export const store = configureStore({
     reducer: {
         task: taskReducer,
         socket: socketReducer,
+        error: errorReducer,
     },
     middleware: [
         socketMiddleware(socket),
@@ -25,3 +27,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     unknown,
     Action<string>
 >;
+export type AsyncAction = (dispatch: (action: Action) => any) => void;
+

@@ -1,4 +1,4 @@
-import { Socket } from '../utils/Socket';
+import { Socket } from '../services/Socket';
 import * as consts from '../utils/consts';
 import { AppDispatch, RootState } from '../redux/store';
 import { fromStringToJson } from '../utils/lib';

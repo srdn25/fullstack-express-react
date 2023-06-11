@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "React client",
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "@types/react": "^18.2.8",
     "@types/react-dom": "^18.2.4",
     "ajv": "^8.12.0",
+    "axios": "^1.4.0",
     "moment-timezone": "^0.5.43",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

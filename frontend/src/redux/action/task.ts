@@ -1,5 +1,7 @@
 import * as consts from '../../utils/consts';
 import { ITask } from '../reducer/task';
+import { AppThunk } from '../store';
+import taskApi from '../../services/taskApi';
 import { AnyAction } from '@reduxjs/toolkit';
 
 export function getAllTasks(payload: ITask[]): AnyAction {

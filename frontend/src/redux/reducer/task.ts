@@ -1,6 +1,5 @@
 import { Moment } from 'moment';
 import * as consts from '../../utils/consts';
-import { AnyAction } from '@reduxjs/toolkit';
 
 export interface ITaskBase {
     title: string;
@@ -26,7 +25,7 @@ export const initState: IState = {
     taskList: [],
 }
 
-export function taskReducer (state: IState = initState, action: AnyAction): IState {
+export function taskReducer (state: IState = initState, action: any): IState {
     switch (action.type) {
         case consts.UPDATE_ALL_TASKS:
             if (Array.isArray(action.payload)) {
@@ -53,6 +52,12 @@ export function taskReducer (state: IState = initState, action: AnyAction): ISta
 
         case consts.ADD_TASK:
             if (Array.isArray(action.payload)) {
+                return state;
+            }
+
+            const alreadyExist = state.taskList.find((task) => task.id === action.payload.id);
+
+            if (alreadyExist) {
                 return state;
             }
 

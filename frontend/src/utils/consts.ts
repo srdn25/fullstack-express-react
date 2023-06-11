@@ -1,18 +1,16 @@
 import { convertReadableStatusesToServerEnum } from './lib';
 
-export const UPDATE_ALL_TASKS = 'UPDATE_ALL_TASKS';
+export const UPDATE_ALL_TASKS: string = 'UPDATE_ALL_TASKS';
 
-export const UPDATE_TASK = 'UPDATE_TASK';
+export const UPDATE_TASK: string = 'UPDATE_TASK';
 
-export const DELETE_TASK = 'DELETE_TASK';
+export const DELETE_TASK: string = 'DELETE_TASK';
 
-export const ADD_TASK = 'ADD_TASK';
+export const ADD_TASK: string = 'ADD_TASK';
 
-export const SET_NEW_SOCKET = 'SET_NEW_SOCKET';
+export const SET_NEW_SOCKET: string = 'SET_NEW_SOCKET';
 
-export const SAVE_TASK_BY_SOCKET = 'SAVE_TASK_BY_SOCKET';
-
-export const DELETE_TASK_BY_SOCKET = 'DELETE_TASK_BY_SOCKET';
+export const SET_ERROR: string = 'SET_ERROR';
 
 export const TASK_DEFAULT_STATUSES_READABLE: { [k: string]: string } = {
     in_progress: 'In Progress',
@@ -33,3 +31,6 @@ export const WEBSOCKET_MESSAGE_METHODS = {
     update: 'update',
     delete: 'delete',
 };
+
+// in ms
+export const HTTP_REQUEST_TIMEOUT: number = 1000;

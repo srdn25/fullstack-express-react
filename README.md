@@ -2,8 +2,8 @@
 You need to develop a web application for task management. The application should allow
 users to create new tasks, view existing tasks, and mark completed tasks.
 The application should include the following pages:
-- [ ] Task creation page
-- [ ] Task list viewing page
+- [x] Task creation page
+- [x] Task list viewing page
 - [ ] Modal window with detailed information about the task (not page)
 The task creation page should have fields for entering the task title, description, and due date.
 The task list viewing page should display all tasks sorted by due date (the closest tasks should
@@ -47,5 +47,3 @@ backend will work on 3001 port
 - Added a lot of validation in business logic because don't have validator for requests.
 When this task will be done, I want to add AJV validator and make more clear business logic
 - Added 'individualHooks' to beforeBulkDestroy/Update for more comfortable work with this hook. Wrote comment about it in model
-- As for me - better send Create, Update, Delete operations by http requests. By webSocket only listen tasks updates.
-But as I understood - in this task, want to use only websockets. I added http as well (only server side), for show how I can do it.
