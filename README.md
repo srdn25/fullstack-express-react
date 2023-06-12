@@ -49,3 +49,11 @@ When this task will be done, I want to add AJV validator and make more clear bus
 - Added 'individualHooks' to beforeBulkDestroy/Update for more comfortable work with this hook. Wrote comment about it in model
 - Application don't should store data - all cache better move to redis
 - Need add validation library, for check validation in one place, like AJV
+
+---
+## Screenshots
+
+![ui dashboard](./homepage.png)
+![ui create](./create.png)
+![ui modal](./modal.png)
+![ui action](./action.png)
