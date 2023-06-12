@@ -12,7 +12,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to unsupported methods for task', () 
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = {
-            user: 'SpongeBob',
             method: WEBSOCKET_MESSAGE_METHODS.read,
             type: WEBSOCKET_MESSAGE_TYPES.subscribe,
         };
@@ -48,7 +47,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to unsupported methods for task', () 
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = {
-            user: 'SpongeBob',
             method: 'patch',
             type: WEBSOCKET_MESSAGE_TYPES.subscribe,
         };

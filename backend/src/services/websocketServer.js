@@ -4,10 +4,11 @@ const { convertToJSON } = require('../utils');
 
 module.exports = (app) => {
     const wss = new WebSocketServer({ port: app.config.WEBSOCKET_PORT });
+    const messageHandler = new WebsocketMessageHandler({ user: Date.now(), app });
 
-    wss.on('connection', (ws) => {
+    wss.on('connection', async (ws) => {
         // create message handler for each user
-        const messageHandler = new WebsocketMessageHandler({ app, send: ws.send.bind(ws) });
+        messageHandler.connect(ws.send.bind(ws));
 
         ws.on('error', (error) => app.logger.error({
             message: 'Websocket client connection error',
@@ -50,5 +51,5 @@ module.exports = (app) => {
         error,
     }));
 
-    return wss;
+    return { wss, messageHandler };
 };

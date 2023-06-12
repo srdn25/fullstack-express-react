@@ -126,7 +126,8 @@ function TaskModal (props: IProps) : React.ReactElement<IProps> {
             props.task?.title !== title ||
             props.task?.author !== author ||
             initDueDate !== dueDate ||
-            props.task?.description !== description
+            props.task?.description !== description ||
+            props.task?.status !== status
         ) {
             return true;
         }
@@ -158,6 +159,10 @@ function TaskModal (props: IProps) : React.ReactElement<IProps> {
             dispatch(setGlobalNotification('Task updated'));
 
             setTimeout(() => dispatch(setGlobalNotification(null)), 5000);
+
+            if (props.closeTask) {
+                props.closeTask();
+            }
         }
     }
 
@@ -176,7 +181,7 @@ function TaskModal (props: IProps) : React.ReactElement<IProps> {
 
         if (!task) {
             clearInterval(interval);
-            dispatch(setGlobalError('Cannot update task'));
+            dispatch(setGlobalError('Cannot delete task'));
             setTimeout(() => dispatch(setGlobalError(null)), 5000);
         } else {
             dispatch(deleteTask({ id: props.task.id }));

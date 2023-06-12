@@ -9,6 +9,7 @@ const UpdateStrategy = require('../strategies/Update');
 const DeleteStrategy = require('../strategies/Delete');
 
 const subscribeCallback = require('./subscribeCallback');
+const { consts } = require('../../../../utils');
 
 const STRATEGIES = {
     create: CreateStrategy,
@@ -17,27 +18,22 @@ const STRATEGIES = {
     delete: DeleteStrategy,
 }
 
+const supportSubscribeMethods = [
+    WEBSOCKET_MESSAGE_METHODS.create,
+    WEBSOCKET_MESSAGE_METHODS.update,
+    WEBSOCKET_MESSAGE_METHODS.delete,
+];
+
 class MessageHandler extends MessageHandlerAbstract {
     constructor(props) {
         super(props);
 
-        this.user = null;
+        this.user = props.user;
         this.type = null;
         this.method = null;
 
-        // instead of real auth. Allow only uniq user string
-        this.users = new Set();
-
-        this.webSocketSend = props.send;
+        this.webSocketSend = null;
     }
-
-    /**
-     * @typedef {object} CheckMessageTypeResponse
-     * @property {string=} message
-     * @property {object=} response
-     * @property {string} response.type
-     * @property {string} response.method
-     */
 
     /**
      * Validate message. Allow to subscribe and send (create, read, update, delete) events
@@ -50,13 +46,6 @@ class MessageHandler extends MessageHandlerAbstract {
      * so, imagine this param will like JWT with uniq user
      */
     validateMessage (data) {
-        if (!data.user || typeof data.user !== 'string') {
-            throw new this.app.TransportError({
-                status: 401,
-                message: 'User is required, and should be string',
-            })
-        }
-
         if (!data.type || !Object.values(WEBSOCKET_MESSAGE_TYPES).includes(data.type)) {
             throw new this.app.TransportError({
                 status: 400,
@@ -80,7 +69,6 @@ class MessageHandler extends MessageHandlerAbstract {
 
         this.type = data.type;
         this.method = data.method;
-        this.user = data.user;
     }
 
     async handle (payload) {
@@ -95,20 +83,14 @@ class MessageHandler extends MessageHandlerAbstract {
             const result = await taskActionStrategy.executeStrategy(payload);
 
             return {
-                type: this.type,
+                type: WEBSOCKET_MESSAGE_TYPES.send,
                 ...result,
             }
         }
 
         // subscribe to actions (update, delete, create)
         if (this.type === WEBSOCKET_MESSAGE_TYPES.subscribe) {
-            const supportMethods = [
-                WEBSOCKET_MESSAGE_METHODS.create,
-                WEBSOCKET_MESSAGE_METHODS.update,
-                WEBSOCKET_MESSAGE_METHODS.delete,
-            ];
-
-            if (!supportMethods.includes(this.method)) {
+            if (!supportSubscribeMethods.includes(this.method)) {
                 throw new this.app.TransportError({
                     code: 400,
                     message: 'Allowed only update, delete, and create methods for subscribe'
@@ -119,23 +101,27 @@ class MessageHandler extends MessageHandlerAbstract {
 
             const userCallbacks = this.app.callbackList.get(this.user);
 
-            // user already has subscribes to events
             if (userCallbacks && userCallbacks[this.method]) {
                 this.app.logger.debug({
                     message: `User: ${this.user} try to subscribe more than 1 time to the same method (${this.method})`,
                 });
+
+                this.app.callbackList.set(this.user, {
+                    ...userCallbacks && userCallbacks,
+                    [this.method]: [ ...userCallbacks[this.method], callback.bind(this) ],
+                })
             } else {
                 // this is first user subscribe
                 this.app.callbackList.set(this.user, {
                     ...userCallbacks && userCallbacks,
-                    [this.method]: callback.bind(this),
+                    [this.method]: [ callback.bind(this) ],
                 })
             }
 
             const payload = this.app.pubsub.subscribe(this.method, callback);
 
             return {
-                type: this.type,
+                type: consts.WEBSOCKET_MESSAGE_TYPES.subscribe,
                 method: this.method,
                 payload,
             }
@@ -153,15 +139,10 @@ class MessageHandler extends MessageHandlerAbstract {
                 message: 'Unauthorized',
             });
         }
+    }
 
-        if (this.users.has(this.user)) {
-            throw new this.app.TransportError({
-                status: 403,
-                message: 'Allow only one connection for user',
-            });
-        }
-
-        this.users.add(this.user);
+    connect (send) {
+        this.webSocketSend = send;
     }
 
     disconnect () {
@@ -170,16 +151,42 @@ class MessageHandler extends MessageHandlerAbstract {
 
         // remove callback from pubsub
         if (userCallbacks) {
-            for (const [method, callback] of Object.entries(userCallbacks)) {
-                this.app.pubsub.unsubscribe(method, callback);
+            for (const [method, callbacks] of Object.entries(userCallbacks)) {
+                callbacks.forEach((callback) => {
+                    this.app.pubsub.unsubscribe(method, callback);
+                });
             }
 
             // delete callback from this list
             this.app.callbackList.delete(this.user);
         }
+    }
 
-        // remove user from pubsub
-        this.users.delete(this.user);
+    sendDataToSubscribers (method, payload) {
+        if (!supportSubscribeMethods.includes(method)) {
+            throw new this.app.TransportError({
+                message: 'sendDataToSubscribers got unsupported method',
+                status: 500,
+                error: {
+                    method,
+                }
+            });
+        }
+
+        this.app.callbackList.forEach((user) => {
+            if (!user[method]) {
+                // nothing to handle
+                return;
+            }
+
+            user[method].forEach((callback) => {
+                callback({
+                    type: WEBSOCKET_MESSAGE_TYPES.subscribe,
+                    method,
+                    payload
+                })
+            });
+        });
     }
 }
 

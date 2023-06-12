@@ -45,7 +45,6 @@ describe('[FUNCTIONAL] websocket UPDATE task', () => {
 
         const payloadMessage = JSON.stringify({
             ...payload,
-            user: 'Dean',
             method: WEBSOCKET_MESSAGE_METHODS.update,
             type: WEBSOCKET_MESSAGE_TYPES.send,
             taskId,

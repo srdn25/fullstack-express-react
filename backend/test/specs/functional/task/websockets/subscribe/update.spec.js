@@ -42,7 +42,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to update task', () => {
         };
 
         const payloadMessage = JSON.stringify({
-            user: 'Patric',
             method: WEBSOCKET_MESSAGE_METHODS.update,
             type: WEBSOCKET_MESSAGE_TYPES.subscribe,
         });

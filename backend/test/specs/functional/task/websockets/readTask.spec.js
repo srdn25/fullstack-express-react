@@ -53,7 +53,6 @@ describe('[FUNCTIONAL] websocket READ task', () => {
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'Sam',
             method: WEBSOCKET_MESSAGE_METHODS.read,
             type: WEBSOCKET_MESSAGE_TYPES.send,
             id: taskId,
@@ -100,7 +99,6 @@ describe('[FUNCTIONAL] websocket READ task', () => {
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'Sam',
             method: WEBSOCKET_MESSAGE_METHODS.read,
             type: WEBSOCKET_MESSAGE_TYPES.send,
             where: '*',
@@ -157,7 +155,6 @@ describe('[FUNCTIONAL] websocket READ task', () => {
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'Sam',
             method: WEBSOCKET_MESSAGE_METHODS.read,
             type: WEBSOCKET_MESSAGE_TYPES.send,
             id: notExistingTaskId,

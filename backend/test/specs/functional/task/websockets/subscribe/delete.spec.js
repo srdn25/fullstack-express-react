@@ -51,7 +51,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to delete task', () => {
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'Mr Crabs',
             method: WEBSOCKET_MESSAGE_METHODS.delete,
             type: WEBSOCKET_MESSAGE_TYPES.subscribe,
         });
@@ -61,7 +60,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to delete task', () => {
         client.on('message', (data) => {
             responseMessages.push(convertToJSON(data.toString()));
 
-            // should get 4 messages - than close connection
             if (responseMessages.length >= 3) {
                 client.close();
             }

@@ -12,7 +12,6 @@ describe('[FUNCTIONAL] websocket SUBSCRIBE to create task', () => {
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'SpongeBob',
             method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.subscribe,
         });

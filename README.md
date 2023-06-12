@@ -47,3 +47,5 @@ backend will work on 3001 port
 - Added a lot of validation in business logic because don't have validator for requests.
 When this task will be done, I want to add AJV validator and make more clear business logic
 - Added 'individualHooks' to beforeBulkDestroy/Update for more comfortable work with this hook. Wrote comment about it in model
+- Application don't should store data - all cache better move to redis
+- Need add validation library, for check validation in one place, like AJV

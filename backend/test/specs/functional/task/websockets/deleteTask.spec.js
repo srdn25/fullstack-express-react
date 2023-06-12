@@ -42,7 +42,6 @@ describe('[FUNCTIONAL] websocket DELETE task', () => {
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'Patric',
             method: WEBSOCKET_MESSAGE_METHODS.delete,
             type: WEBSOCKET_MESSAGE_TYPES.send,
             id: taskId,
@@ -88,7 +87,6 @@ describe('[FUNCTIONAL] websocket DELETE task', () => {
         await helper.waitForSocketState(client, client.OPEN);
 
         const payloadMessage = JSON.stringify({
-            user: 'Akai',
             method: WEBSOCKET_MESSAGE_METHODS.delete,
             type: WEBSOCKET_MESSAGE_TYPES.send,
             id: notExistingTaskId,

@@ -19,7 +19,6 @@ describe('[FUNCTIONAL] websocket connection', () => {
         await helper.waitForSocketState(client, client.OPEN);
 
         const testMessage = JSON.stringify({
-            user: 'SpongeBob',
             method: 'create',
             type: WEBSOCKET_MESSAGE_TYPES.subscribe,
         });

@@ -19,7 +19,6 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
 
         const payloadMessage = JSON.stringify({
             ...payload,
-            user: 'Patric',
             method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.send,
         });
@@ -77,7 +76,6 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
 
         const payloadMessage = JSON.stringify({
             ...payload,
-            user: 'Patric',
             method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.send,
         });
@@ -124,7 +122,6 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
 
         const payloadMessage = JSON.stringify({
             ...payload,
-            user: 'Patric',
             method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.send,
         });
@@ -171,7 +168,6 @@ describe('[FUNCTIONAL] websocket CREATE task', () => {
 
         const payloadMessage = JSON.stringify({
             ...payload,
-            user: 'Patric',
             method: WEBSOCKET_MESSAGE_METHODS.create,
             type: WEBSOCKET_MESSAGE_TYPES.send,
         });

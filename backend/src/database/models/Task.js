@@ -4,6 +4,7 @@ const {
 } = require('sequelize');
 const { consts: { TASK_STATUS }, prepareDate } = require('../../utils');
 const { WEBSOCKET_MESSAGE_METHODS, WEBSOCKET_MESSAGE_TYPES } = require('../../utils/consts');
+const WebSocketMessageHandler = require('../../controller/actions/task/websockets/MessageHandler');
 
 module.exports = (sequelize, DataTypes, app) => {
   class Task extends Model {
@@ -51,45 +52,33 @@ module.exports = (sequelize, DataTypes, app) => {
     hooks: {
       afterCreate(instance, options) {
         // send data to all subscribers
-        app.callbackList.forEach((el) => {
-          if (el.create) {
-            el.create({
-              type: WEBSOCKET_MESSAGE_TYPES.subscribe,
-              method: WEBSOCKET_MESSAGE_METHODS.create,
-              payload: {
-                ...instance.serialize(),
-              },
-            })
-          }
+        if (!app.websocket.messageHandler) {
+          return;
+        }
+
+        app.websocket.messageHandler.sendDataToSubscribers(WEBSOCKET_MESSAGE_METHODS.create, {
+          ...instance.serialize(),
         });
       },
       afterBulkCreate(instances, options) {
         // send data to all subscribers
         for (const instance of instances) {
-          app.callbackList.forEach((el) => {
-            if (el.create) {
-              el.create({
-                type: WEBSOCKET_MESSAGE_TYPES.subscribe,
-                method: WEBSOCKET_MESSAGE_METHODS.create,
-                payload: {
-                  ...instance.serialize(),
-                },
-              })
-            }
+          if (!app.websocket.messageHandler) {
+            return;
+          }
+
+          app.websocket.messageHandler.sendDataToSubscribers(WEBSOCKET_MESSAGE_METHODS.create, {
+            ...instance.serialize(),
           });
         }
       },
       afterDestroy(instance, options) {
-        app.callbackList.forEach((el) => {
-          if (el.delete) {
-            el.delete({
-              type: WEBSOCKET_MESSAGE_TYPES.subscribe,
-              method: WEBSOCKET_MESSAGE_METHODS.delete,
-              payload: {
-                ...instance.serialize(),
-              },
-            })
-          }
+        if (!app.websocket.messageHandler) {
+          return;
+        }
+
+        app.websocket.messageHandler.sendDataToSubscribers(WEBSOCKET_MESSAGE_METHODS.delete, {
+          ...instance.serialize(),
         });
       },
 
@@ -121,17 +110,22 @@ module.exports = (sequelize, DataTypes, app) => {
       afterBulkDestroy(options) {
         // handle deleted entities
       },
+      afterSave(instance, options) {
+        if (!app.websocket.messageHandler) {
+          return;
+        }
+
+        app.websocket.messageHandler.sendDataToSubscribers(WEBSOCKET_MESSAGE_METHODS.update, {
+          ...instance.serialize(),
+        });
+      },
       afterUpdate(instance, options) {
-        app.callbackList.forEach((el) => {
-          if (el.update) {
-            el.update({
-              type: WEBSOCKET_MESSAGE_TYPES.subscribe,
-              method: WEBSOCKET_MESSAGE_METHODS.update,
-              payload: {
-                ...instance.serialize(),
-              },
-            })
-          }
+        if (!app.websocket.messageHandler) {
+          return;
+        }
+
+        app.websocket.messageHandler.sendDataToSubscribers(WEBSOCKET_MESSAGE_METHODS.update, {
+          ...instance.serialize(),
         });
       },
       /**
