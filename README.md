@@ -42,6 +42,35 @@ execute command `docker compose up -d`
 backend will work on 3001 port
 
 ---
+## Conclusion
+
+I made a concerted effort to showcase my skills by applying various approaches in the development of this task management web application. To demonstrate my proficiency, I employed the strategy pattern, pub-sub architecture, class-based organization to separate business logic from requests, and implemented handlers for both HTTP requests and WebSocket messages. Additionally, I wrote functional tests to ensure the application's functionality.
+
+Given more time, I would have further enhanced the project by incorporating additional elements such as a request validation library, more extensive testing, pagination, Swagger for API documentation, and other improvements. However, I believe that I have fulfilled the requirements of the task and demonstrated my abilities. There is always room for improvement, as there are no limits to perfection.
+
+Thank you for considering my work, and I look forward to discussing any feedback or further opportunities
+
+I am pleased to have successfully completed the test assignment for the web application task management project. Throughout the development process, I applied various techniques and approaches to showcase my skills and expertise.
+
+First and foremost, I implemented the requested functionality with great attention to detail. The application allows users to create new tasks, view existing tasks, and mark tasks as completed. I designed and implemented the following key pages:
+
+Task Creation Page: This page features fields for entering the task title, description, and due date. It enables users to conveniently create new tasks with relevant information.
+
+Task List Viewing Page: This page displays all tasks in a sorted order based on their due dates. The tasks with the closest deadlines are prioritized and listed at the top. Users can easily access and manage their tasks from this page.
+
+Detailed Task Information Modal Window: I implemented a modal window to provide users with additional details about a specific task. When a task is clicked in the list, the modal window opens, displaying the task title, description, due date, and an option to mark the task as completed. This allows users to access important task information without leaving the main task list page.
+
+In terms of the technology stack, I utilized JS, Node.js, Express, MySQL, and WebSocket for the backend development. On the frontend side, I employed JS, TypeScript, React, Material-UI, WebSocket, and a redux library. These technologies helped me ensure a seamless and efficient development process.
+
+To evaluate the completed task, I considered three essential criteria:
+
+Application Functionality: I meticulously implemented all the specified requirements, ensuring that the application works flawlessly without any errors.
+
+Code Quality: I followed best practices in software development, resulting in clean, well-structured, and maintainable code. I adhered to modern web development standards to ensure code readability and scalability.
+
+Design and User Interface: I paid careful attention to the application's design, aiming for a pleasant and intuitive user interface. The design choices and interactions were carefully crafted to provide users with a seamless and enjoyable experience while managing their tasks.
+
+---
 ## Notes
 - Added umzug script for clear database on tests before run tests. Then execute migrations
 - Added a lot of validation in business logic because don't have validator for requests.

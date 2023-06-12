@@ -70,6 +70,7 @@ function Dashboard(props: IProps): React.ReactElement {
                 rows={prepareData(props.taskList)}
                 columns={columns}
                 onRowClick={openTask}
+                sortModel={[{ field: 'dueDate', sort: 'asc' }]}
                 initialState={{
                     pagination: {
                         paginationModel: { page: 0, pageSize: 7 },

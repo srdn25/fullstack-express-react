@@ -3,7 +3,7 @@ import { HTTP_REQUEST_TIMEOUT } from '../utils/consts';
 import { ITaskBase, ITaskUpdate } from '../redux/reducer/task';
 
 const api = axios.create({
-    baseURL: 'http://localhost:9000',
+    baseURL: 'http://localhost:3030',
     timeout: HTTP_REQUEST_TIMEOUT,
 });
 
