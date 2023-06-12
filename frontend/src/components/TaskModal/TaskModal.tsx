@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import { useDispatch } from 'react-redux';
 
 import './TaskModal.css';
 
-import { Stack, TextField, Typography, } from '@mui/material';
+import {
+    Button,
+    TextField,
+    Typography,
+    Box,
+    Modal,
+    Stack,
+    IconButton,
+} from '@mui/material';
 
-import { ITask } from '../../redux/reducer/task';
-import { prepareReadableDate } from '../../utils/lib';
+import { ITask, ITaskUpdate } from '../../redux/reducer/task';
+import { prepareDate, prepareReadableDate, updateLoading } from '../../utils/lib';
 import TaskDetails from '../TaskDetails/TaskDetails';
 import { TASK_DEFAULT_STATUSES } from '../../utils/consts';
+import { taskValidate } from '../../validation';
+import taskApi from '../../services/taskApi';
+import { setGlobalError, setGlobalNotification } from '../../redux/action/notification';
+import { deleteTask, updateTask } from '../../redux/action/task';
+import LinearLoader from '../LinearLoader/LinearLoader';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface IProps {
     readonly modalOpen: boolean;
@@ -36,15 +49,33 @@ function TaskModal (props: IProps) : React.ReactElement<IProps> {
     const [description, setDescription] = useState<string>('');
     const [author, setAuthor] = useState<string>('');
     const [dueDate, setDueDate] = useState<string|Moment|null>(null);
+    const [initDueDate, setInitDueDate] = useState<string|Moment|null>(null);
     const [created, setCreated] = useState<string|Moment|null>(null);
     const [updated, setUpdated] = useState<string|Moment|null>(null);
+    const [validateErrors, setValidateErrors] = useState<object|null>({ error: 1 });
+    const [requestInProcess, setRequestInProcess] = useState<boolean>(false);
+    const [requestProgress, setRequestProgress] = useState<number>(0);
+
+    const dispatch = useDispatch();
+
+    function prepareTaskForUpdate (): ITaskUpdate {
+        return {
+            title,
+            author,
+            description,
+            status,
+            ...dueDate && { dueDate: prepareDate(dueDate) },
+        }
+    }
 
     useEffect(() => {
         if (props.task) {
+            const date = moment(props.task.dueDate);
             setStatus(props.task.status);
             setTitle(props.task.title);
             setAuthor(props.task.author);
-            setDueDate(moment(props.task.dueDate));
+            setInitDueDate(date)
+            setDueDate(date);
 
             if (props.task.description) {
                 setDescription(props.task.description);
@@ -65,10 +96,99 @@ function TaskModal (props: IProps) : React.ReactElement<IProps> {
             setDescription('');
             setAuthor('');
             setDueDate('');
+            setInitDueDate('');
             setCreated('');
             setUpdated('');
+            setValidateErrors({ error: 1 });
         }
     }, [props.task]);
+
+    useEffect(() => {
+        const task = prepareTaskForUpdate();
+
+        const isValid = taskValidate(task);
+
+        if (isValid && hasDifferent()) {
+            setValidateErrors(null);
+        } else {
+            setValidateErrors(taskValidate.errors || { error: 1 });
+        }
+    }, [
+        title,
+        dueDate,
+        description,
+        author,
+        status,
+    ]);
+
+    function hasDifferent () {
+        if (
+            props.task?.title !== title ||
+            props.task?.author !== author ||
+            initDueDate !== dueDate ||
+            props.task?.description !== description
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    async function handleUpdateTask () {
+        if (!props.task?.id) {
+            console.error('Tried to update task without task ID');
+            return;
+        }
+
+        setRequestInProcess(true);
+        const interval = updateLoading(setRequestProgress);
+
+        const task = await taskApi.updateTask(props.task.id, prepareTaskForUpdate())
+
+        setRequestInProcess(false);
+        clearInterval(interval);
+        setRequestProgress(0);
+
+        if (!task) {
+            dispatch(setGlobalError('Cannot update task'));
+            setTimeout(() => dispatch(setGlobalError(null)), 5000);
+        } else {
+            dispatch(updateTask(task));
+
+            dispatch(setGlobalNotification('Task updated'));
+
+            setTimeout(() => dispatch(setGlobalNotification(null)), 5000);
+        }
+    }
+
+    async function handleDeleteTask () {
+        if (!props.task?.id) {
+            console.error('Tried to delete task without task ID');
+            return;
+        }
+
+        setRequestInProcess(true);
+        const interval = updateLoading(setRequestProgress);
+
+        const task = await taskApi.deleteTask(props.task.id)
+
+        setRequestInProcess(false);
+
+        if (!task) {
+            clearInterval(interval);
+            dispatch(setGlobalError('Cannot update task'));
+            setTimeout(() => dispatch(setGlobalError(null)), 5000);
+        } else {
+            dispatch(deleteTask({ id: props.task.id }));
+
+            dispatch(setGlobalNotification('Task deleted'));
+
+            setTimeout(() => dispatch(setGlobalNotification(null)), 5000);
+            if (props.closeTask) {
+                props.closeTask();
+            }
+        }
+    }
 
     return (
         <div className='task-modal'>
@@ -85,8 +205,19 @@ function TaskModal (props: IProps) : React.ReactElement<IProps> {
                         component='h3'
                         margin='15px'
                     >
-                        Task details
+                        Task details #{props.task?.id}
                     </Typography>
+                    <IconButton
+                        className='close-btn'
+                        aria-label='close'
+                        color='inherit'
+                        size='small'
+                        onClick={() => {
+                            props.closeTask();
+                        }}
+                    >
+                        <CloseIcon fontSize='inherit' />
+                    </IconButton>
 
                     <TaskDetails
                         title={title}
@@ -119,6 +250,27 @@ function TaskModal (props: IProps) : React.ReactElement<IProps> {
                             disabled
                         />
                     </Stack>
+
+                    {requestInProcess && <LinearLoader value={requestProgress} />}
+
+                    <div className='control-btns'>
+                        <Button
+                            disabled={requestInProcess}
+                            variant="outlined"
+                            color="error"
+                            onClick={handleDeleteTask}
+                        >
+                            Delete
+                        </Button>
+                        <Button
+                            disabled={!!validateErrors || requestInProcess}
+                            variant="contained"
+                            color="success"
+                            onClick={handleUpdateTask}
+                        >
+                            Update
+                        </Button>
+                    </div>
                 </Box>
             </Modal>
         </div>

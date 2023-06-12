@@ -1,5 +1,13 @@
 import React from 'react';
-import { Alert as MAlert, AlertColor, Collapse, IconButton } from '@mui/material';
+import './Alert.css';
+
+import {
+    Alert as MAlert,
+    AlertColor,
+    Collapse,
+    IconButton,
+} from '@mui/material';
+
 import CloseIcon from '@mui/icons-material/Close';
 
 interface IProps {

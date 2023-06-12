@@ -14,7 +14,7 @@ import { prepareDate, updateLoading } from '../../utils/lib';
 import Alert from '../Alert/Alert';
 import { addTask } from '../../redux/action/task';
 import taskApi from '../../services/taskApi';
-import { setGlobalError } from '../../redux/action/error';
+import { setGlobalError } from '../../redux/action/notification';
 
 function CreateTask (): React.ReactElement {
     const [status, setStatus] = useState<string>(TASK_DEFAULT_STATUSES.todo);
@@ -86,9 +86,10 @@ function CreateTask (): React.ReactElement {
         })
 
         setSaveInProcess(false);
+        clearInterval(interval);
+        setSaveProgress(0);
 
         if (!task) {
-            clearInterval(interval);
             dispatch(setGlobalError('Cannot create task'));
             setTimeout(() => dispatch(setGlobalError(null)), 5000);
         } else {
@@ -134,7 +135,7 @@ function CreateTask (): React.ReactElement {
                     Clear form
                 </Button>
                 <Button
-                    disabled={!!validateErrors}
+                    disabled={!!validateErrors || saveInProcess}
                     variant="contained"
                     color="success"
                     onClick={handleSaveTask}

@@ -4,7 +4,7 @@ users to create new tasks, view existing tasks, and mark completed tasks.
 The application should include the following pages:
 - [x] Task creation page
 - [x] Task list viewing page
-- [ ] Modal window with detailed information about the task (not page)
+- [x] Modal window with detailed information about the task (not page)
 The task creation page should have fields for entering the task title, description, and due date.
 The task list viewing page should display all tasks sorted by due date (the closest tasks should
 be at the top).

@@ -14,7 +14,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-import { RootState } from '../../redux/store';
 import { TASK_DEFAULT_STATUSES_READABLE } from '../../utils/consts';
 
 interface IProps {
@@ -64,7 +63,7 @@ function TaskDetails (props: IProps): React.ReactElement {
                     <DateTimePicker
                         label="Due Date"
                         ampm={false}
-                        value={props.dueDate}
+                        value={moment(props.dueDate)}
                         onChange={(date) => {
                             handleFieldUpdate(date, props.updateDueDate);
                         }}

@@ -6,3 +6,10 @@ export function setGlobalError(payload: string|null) {
         payload,
     }
 }
+
+export function setGlobalNotification(payload: string|null) {
+    return {
+        type: consts.SET_NOTIFICATION,
+        payload,
+    }
+}

@@ -12,9 +12,14 @@
   text-align: center;
 }
 
-.show-alert {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  min-width: 300px;
+.control-btns {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.control-btns button {
+  margin-left: 30px;
 }

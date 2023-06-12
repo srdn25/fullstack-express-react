@@ -1,13 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
 import { HTTP_REQUEST_TIMEOUT } from '../utils/consts';
-import { ITaskBase } from '../redux/reducer/task';
-
-interface IUpdateTask {
-    title?: string;
-    description?: string;
-    dueDate?: string;
-    author?: string;
-}
+import { ITaskBase, ITaskUpdate } from '../redux/reducer/task';
 
 const api = axios.create({
     baseURL: 'http://localhost:9000',
@@ -29,6 +22,6 @@ async function requestCatch (request: AxiosPromise) {
 export default {
     api,
     createTask: (payload: ITaskBase) => requestCatch(api.post('/task', payload)),
-    updateTask: (id: number|string, payload: IUpdateTask) => requestCatch(api.put(`/task/${id}`, payload)),
+    updateTask: (id: number|string, payload: ITaskUpdate) => requestCatch(api.put(`/task/${id}`, payload)),
     deleteTask: (id: number|string) => requestCatch(api.delete(`/task/${id}`)),
 };

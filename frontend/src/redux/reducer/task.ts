@@ -17,6 +17,14 @@ export interface ITask extends ITaskBase {
     updatedAt: string;
 }
 
+export interface ITaskUpdate {
+    title?: string;
+    description?: string;
+    dueDate?: string;
+    author?: string;
+    status?: string;
+}
+
 interface IState {
     taskList: ITask[],
 }

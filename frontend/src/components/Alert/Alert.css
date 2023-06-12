@@ -1,0 +1,7 @@
+.show-alert {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    min-width: 300px;
+    z-index: 1500;
+}

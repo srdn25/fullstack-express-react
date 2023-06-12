@@ -8,3 +8,10 @@
 .task-modal-title {
     text-align: center;
 }
+
+.close-btn {
+    position: fixed !important;
+    top: 25px !important;
+    right: 25px !important;
+    font-size: 25px !important;
+}

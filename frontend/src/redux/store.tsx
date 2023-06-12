@@ -3,7 +3,7 @@ import { Socket } from '../services/Socket';
 import { socketMiddleware } from '../middleware/socket';
 import { taskReducer } from './reducer/task';
 import { socketReducer } from './reducer/socket';
-import { errorReducer } from './reducer/error';
+import { notificationReducer } from './reducer/notification';
 
 const socket = new Socket();
 
@@ -12,7 +12,7 @@ export const store = configureStore({
     reducer: {
         task: taskReducer,
         socket: socketReducer,
-        error: errorReducer,
+        notification: notificationReducer,
     },
     middleware: [
         socketMiddleware(socket),
