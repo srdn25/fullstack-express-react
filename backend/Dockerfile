@@ -30,3 +30,4 @@ ENV WEBSOCKET_PORT=3155
 CMD ["npm", "run", "start"]
 
 EXPOSE 3030
+EXPOSE 3155

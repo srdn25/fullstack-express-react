@@ -33,6 +33,7 @@ services:
       - ./backend:/app
     ports:
       - "3030:3030"
+      - "3155:3155"
 
   react:
     depends_on:

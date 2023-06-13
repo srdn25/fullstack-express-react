@@ -39,7 +39,8 @@ Backend config for IDEA
 ---
 ## Start application
 execute command `docker compose up -d`
-backend will work on 3001 port
+backend will work on 3030 port, websocket on 3155
+for fill seeds into database, go to API docker container and execute command `npm run seed:up`
 
 ---
 ## Conclusion
